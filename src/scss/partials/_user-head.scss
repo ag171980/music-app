@@ -1,0 +1,97 @@
+@mixin user-head {
+    .header-primary {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        h1 {
+            margin: 0 25px;
+            color: white;
+            font-family: $font-open-sans;
+        }
+        .arrows {
+            padding: 5px;
+            display: flex;
+            flex-direction: row;
+            button {
+                height: 40px;
+                width: 40px;
+                background-color: rgba(0, 0, 0, 0.6);
+                padding: 5px;
+                border-radius: 25px;
+                border: none;
+                color: rgba(255, 255, 255, 0.8);
+                i {
+                    font-size: 15px;
+                }
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            .searchbar {
+                position: relative;
+                input {
+                    padding: 12px;
+                    border-radius: 20px;
+                    border: none;
+                    outline: none;
+                    box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
+                    width: 250px;
+                    margin: 0 10px;
+                    font-family: $font-open-sans;
+                }
+                i {
+                    position: absolute;
+                    right: 10px;
+                    top: 0px;
+                    padding: 13px;
+                    &:hover {
+                        border-radius: 20px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        .user-settings {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            margin: 0 25px;
+            transition: 0.3s all;
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+                cursor: pointer;
+            }
+            p {
+                color: white;
+                font-family: $font-open-sans;
+            }
+            i {
+                padding: 5px;
+                color: white;
+                font-size: 12px;
+                &:first-child {
+                    background: rgba(255, 255, 255, 0.2);
+                    border-radius: 10px;
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+    .modal-settings{
+        visibility: hidden;
+        width: 200px;
+        background: red;
+        position: absolute;
+        top: 60px;
+        right: 40px;
+    }
+    .modalOn{
+        visibility: visible;
+    }
+}

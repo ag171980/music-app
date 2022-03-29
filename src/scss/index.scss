@@ -1,0 +1,85 @@
+@import "partials/fonts.scss";
+@import "partials/backgroundImage";
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    .index{
+        @include background;
+        .show {
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0, 0, 0, 0.8);
+            header {
+                width: 100vw;
+                height: 80px;
+                background-color: black;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                h2 {
+                    color: white;
+                    font-family: $font-open-sans;
+                    padding: 0 5px;
+                }
+            }
+            .welcome {
+                height: 90%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                h1 {
+                    font-family: $font-open-sans;
+                    font-size: 65px;
+                    padding: 15px;
+                    span {
+                        background: linear-gradient(to right top, #009641, #37ac3e, #5cc137, #81d72a, #a8eb12);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                    }
+                }
+                p {
+                    font-family: $font-open-sans;
+                }
+                h1,
+                p {
+                    color: white;
+                }
+                .buttons-login {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+                    align-items: center;
+                    .btn {
+                        border-radius: 20px;
+                        border: none;
+                        margin: 20px 70px;
+                        padding: 10px 28px;
+                    }
+                    .register,
+                    .login {
+                        font-family: $font-open-sans;
+                        transition: 0.4s all;
+                        text-decoration: none;
+                        &:hover {
+                            cursor: pointer;
+                            transform: scale(1.08);
+                        }
+                    }
+                    .register {
+                        background-image: linear-gradient(to right top, #009641, #37ac3e, #5cc137, #81d72a, #a8eb12);
+                        color: white;
+                    }
+                    .login{
+                        background-color: white;
+                        color: black;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,12 +1,29 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="app">
+    <router-view />
+    <bottombar
+      v-if="this.$route.name != 'Login' && this.$route.name != 'Signin' && this.$route.name != 'Index'"
+      ref="bottombar"
+    />
   </div>
-  <router-view/>
+  <!-- <Sidebar /> -->
 </template>
-
+<script>
+import bottombar from "./components/Bottombar.vue";
+export default {
+  name: "App",
+  components: {
+    bottombar,
+  },
+  methods: {
+    asd() {
+      alert("asd");
+    },
+  },
+};
+</script>
 <style lang="scss">
+@import "./scss/app.scss";
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -20,7 +37,6 @@
 
   a {
     font-weight: bold;
-    color: #2c3e50;
 
     &.router-link-exact-active {
       color: #42b983;

@@ -1,0 +1,152 @@
+@import "partials/fonts.scss";
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.index {
+    
+
+    .show {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .formulario {
+            background-color: rgba(0, 0, 0, 0.9);
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            h1 {
+                background: linear-gradient(to right top, #009641, #37ac3e, #5cc137, #81d72a, #a8eb12);
+                font-family: $font-open-sans;
+                text-align: center;
+                padding: 10px 0px;
+                justify-content: flex-start;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .form {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                .input-group {
+                    position: relative;
+
+                    label {
+                        background: linear-gradient(to right top, #009641, #37ac3e, #5cc137, #81d72a, #a8eb12);
+                        font-family: $font-open-sans;
+                        position: absolute;
+                        top: 25px;
+                        left: 10px;
+                        transition: 0.3s all;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                    }
+                    .input {
+                        background: none;
+                        border: none;
+                        border-bottom: 2px solid #1bb71e;
+                        color: white;
+                        font-family: $font-open-sans;
+                        outline: none;
+                        margin: 20px auto;
+                        padding: 12px 12px;
+                        width: 300px;
+                        &:focus + label {
+                            top: 5px;
+                        }
+                    }
+                    .fijar {
+                        top: 5px;
+                    }
+                }
+                .errors {
+                    padding: 10px;
+                    p {
+                        color: white;
+                        font-family: $font-open-sans;
+                        text-align: start;
+                    }
+                    ul {
+                        list-style: none;
+                        li {
+                            color: red;
+                            padding: 8px;
+                        }
+                    }
+                }
+                button {
+                    background: linear-gradient(to right top, #009641, #37ac3e, #5cc137, #81d72a, #a8eb12);
+                    border: none;
+                    border-radius: 20px;
+                    color: white;
+                    font-family: $font-open-sans;
+                    font-size: 14px;
+                    padding: 12px 18px;
+                    transition: 0.3s all;
+                    &:hover {
+                        cursor: pointer;
+                        transform: scale(1.08);
+                    }
+                }
+                a {
+                    margin: 10px auto;
+                    text-decoration: none;
+                    color: white;
+                    font-family: $font-open-sans;
+                    font-size: 13px;
+                    &:hover {
+                        cursor: pointer;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+        .message {
+            background-color: rgba(0, 0, 0, 0.9);
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+            transition: 0.5s all;
+            .modal {
+                width: 500px;
+                height: 300px;
+                background-color: white;
+                padding: 15px;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-around;
+                p {
+                    font-size: 22px;
+                }
+                a {
+                    color: black;
+                    text-decoration: none;
+                    transition: 0.3s all;
+                    border-radius: 25px;
+                    font-family: $font-open-sans;
+                    padding: 8px;
+                    &:hover {
+                        background: linear-gradient(to right top, #009641, #37ac3e, #5cc137, #81d72a, #a8eb12);
+                        color: white;
+                    }
+                }
+            }
+        }
+        .show-modal {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

@@ -1,0 +1,128 @@
+@mixin bottombar {
+    .bottombar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 998;
+        background-color: #252525;
+        width: 100vw;
+        height: 100px;
+        .music {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 10px;
+            .description {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 9px;
+                h4,
+                p {
+                    color: white;
+                }
+                p {
+                    font-size: 14px;
+                }
+            }
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            left: -58px;
+            .controls-top {
+                button {
+                    height: 35px;
+                    width: 35px;
+                    padding: 10px;
+                    border-radius: 20px;
+                    border: none;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    transition: 0.3s all;
+                    // i {
+                    //     margin-top: 3px;
+                    //     margin-left: 3px;
+                    // }
+                    &:hover {
+                        cursor: pointer;
+                        transform: scale(1.01);
+                    }
+                }
+            }
+            .controls-bottom {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                #bar {
+                    height: 5px;
+                    background: #646464;
+                    border-radius: 10px;
+                    margin: 0 4px;
+                    width:620px;
+                    #fill{
+                        content:"";
+                        position: absolute;
+                        left: 36px;
+                        top: 45px;
+                        z-index: 2;
+                        height: 5px;
+                        width:0px;
+                        border-radius: 10px;
+                        background-color: #CA4FF8;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        #ball{
+                            height: 15px;
+                            width: 15px;
+                            background-color: gray;
+                            border-radius: 50%;
+                            visibility: hidden;
+                        }
+                        &:hover{
+                            transform: scale(1.01);
+                            #ball{
+                                visibility: visible;
+                            }
+                        }
+                    }
+                }
+                span {
+                    color: white;
+                    font-size: 11px;
+                    font-weight: lighter;
+                    font-family: $font-open-sans;
+                    padding: 5px;
+                }
+            }
+        }
+    }
+}
+@keyframes bar-progress{
+    0%{
+        width: 0px;
+    }
+    25%{
+        width: 155px;
+    }
+    50%{
+        width: 310px;
+    }
+    75%{
+        width: 465px;
+    }
+    100%{
+        width: 620px;
+    }
+}
