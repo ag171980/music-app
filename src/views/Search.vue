@@ -98,8 +98,7 @@ export default {
       this.clearSelected();
       this.playlistSelected = this.playlists[id];
       this.songAddToPlaylist.idPlaylist = this.playlists[id].id;
-      let playlist = document.getElementsByClassName("playlist");
-      playlist[id].classList.add("selected");
+      document.getElementsByClassName("playlist")[id].classList.add("selected");
     },
     clearSelected() {
       let playlist = document.getElementsByClassName("playlist");
@@ -126,6 +125,8 @@ export default {
         minutes: 0,
         seconds: 0,
       };
+
+
       duration.split("").map((item, index, array) => {
         if (array[index] == "H") {
           if (!isNaN(Number(array[index - 2]))) {
@@ -166,8 +167,6 @@ export default {
       );
     },
     addToPlaylistSelected() {
-      // setTimeout(function () {
-      //   }, 2000);
       axios
         .post(
           `http://localhost/api/playlist/add_song_in_playlist`,
@@ -177,11 +176,14 @@ export default {
           console.log(res.data);
         });
     },
+
+
     openList(idSongSelected = null) {
       if (this.modalPlaylists) {
         document.getElementsByClassName("modal")[0].classList.remove("show");
         this.modalPlaylists = false;
       } else {
+
         this.songsSelected = this.resultsSearch[idSongSelected];
         this.songAddToPlaylist.song = {
           id: this.resultsSearch[idSongSelected].id.videoId,

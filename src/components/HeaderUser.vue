@@ -54,7 +54,7 @@ export default {
     },
     searchMusic() {
       this.$parent.resultOf = this.searchInYT;
-      console.log(this.$parent.resultOf)
+      // console.log(this.$parent.resultOf)
       axios
         .get(
           `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${this.searchInYT}&key=${this.key}`

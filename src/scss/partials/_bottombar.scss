@@ -69,33 +69,40 @@
                     background: #646464;
                     border-radius: 10px;
                     margin: 0 4px;
-                    width:620px;
-                    #fill{
-                        content:"";
+                    width: 620px;
+                    .fill-bar {
+                        content: "";
                         position: absolute;
                         left: 36px;
                         top: 45px;
                         z-index: 2;
                         height: 5px;
-                        width:0px;
+                        width: 0px;
                         border-radius: 10px;
-                        background-color: #CA4FF8;
+                        background-color: #ca4ff8;
                         display: flex;
                         align-items: center;
                         justify-content: flex-end;
-                        #ball{
+                        #ball {
                             height: 15px;
                             width: 15px;
                             background-color: gray;
                             border-radius: 50%;
                             visibility: hidden;
                         }
-                        &:hover{
+                        &:hover {
                             transform: scale(1.01);
-                            #ball{
+                            #ball {
                                 visibility: visible;
                             }
                         }
+                    }
+                    .paused {
+                        background-color: red;
+                        -webkit-animation-play-state: paused !important;
+                        -moz-animation-play-state: paused !important;
+                        -o-animation-play-state: paused !important;
+                        animation-play-state: paused !important;
                     }
                 }
                 span {
@@ -109,20 +116,20 @@
         }
     }
 }
-@keyframes bar-progress{
-    0%{
+@keyframes bar-progress {
+    0% {
         width: 0px;
     }
-    25%{
+    25% {
         width: 155px;
     }
-    50%{
+    50% {
         width: 310px;
     }
-    75%{
+    75% {
         width: 465px;
     }
-    100%{
+    100% {
         width: 620px;
     }
 }

@@ -66,8 +66,8 @@
         <div class="playlist-musics">
           <div class="head-playlist">
             <p id="number">#</p>
-            <p id="title">Title</p>
-            <p id="artist">Artist</p>
+            <p id="title">TITLE</p>
+            <p id="artist">ARTIST</p>
             <p id="duration"><i class="far fa-clock"></i></p>
           </div>
           <div
@@ -78,10 +78,6 @@
             <div class="music" @dblclick="showAlert(songs.name, songs.artist)">
               <div class="number">
                 <p>{{ ids + 1 }}</p>
-                <!-- <i
-                  @click="showAlert(songs.name, songs.artist)"
-                  class="fas fa-play"
-                ></i> -->
                 <i @click="putVideo(songs)" class="fas fa-play"></i>
               </div>
               <div class="description-music">
@@ -123,51 +119,18 @@ export default {
       img: "",
       stateFilters: true,
       actualFilter: "Filter By",
-      player:"",
-      done:""
+      player: "",
+      done: "",
     };
   },
   methods: {
     putVideo(arrSong) {
-      // console.log(arrSong);
-      // var tag = document.createElement("script");
-
-      // tag.src = "https://www.youtube.com/iframe_api";
-      // var firstScriptTag = document.getElementsByTagName("script")[0];
-      // firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
       let videoYoutube = document.getElementById("videoYT");
       videoYoutube.src = `https://www.youtube.com/embed/${arrSong.id}?&autoplay=1&controls=1&enablejsapi=1`;
 
-      // let song = {
-      //   name: arrSong.name,
-      //   artist: arrSong.artist,
-      // };
-
-      
       this.$parent.$parent.$refs.bottombar.getSong(arrSong);
     },
-    // onYouTubeIframeAPIReady() {
-    //   this.player = new YT.Player("videoYoutube", {
-    //     videoId: this.songs.id,
-    //     events: {
-    //       onReady: this.onPlayerReady(),
-    //       onStateChange: this.onPlayerStateChange(),
-    //     },
-    //   });
-    // },
-    // onPlayerReady(event) {
-    //   event.target.playVideo();
-    // },
-    // onPlayerStateChange(event) {
-    //   if (event.data == YT.PlayerState.PLAYING && !this.done) {
-    //     setTimeout(this.stopVideo(), 6000);
-    //     this.done = true;
-    //   }
-    // },
-    // stopVideo() {
-    //   this.player.stopVideo();
-    // },
     showAlert(name, artist) {
       let song = {
         name: name,

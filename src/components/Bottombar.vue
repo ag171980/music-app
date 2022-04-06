@@ -28,9 +28,8 @@
       </div>
       <div class="controls-bottom">
         <span id="ini">0:00</span>
-        {{ timer.seconds }}
         <div id="bar">
-          <div id="fill">
+          <div id="fill" class="fill-bar">
             <div id="ball"></div>
           </div>
         </div>
@@ -38,11 +37,17 @@
       </div>
     </div>
     <div class="volumen">
-      <!-- <i class="fas fa-volume-mute"></i>
-      <i class="fas fa-volume-off"></i>
-      <i class="fas fa-volume-down"></i> -->
-      <i class="fas fa-volume-up"></i>
-      <progress id="bar" value="0" max="100"></progress>
+      <i v-if="valueVol == 0" class="fas fa-volume-mute"></i>
+      <i v-else-if="valueVol < 50 && valueVol != 0" class="fas fa-volume-down"></i>
+      <i v-else-if="valueVol >= 50" class="fas fa-volume-up"></i>
+      <input
+        type="range"
+        @change="volumeVideo(valueVol)"
+        v-model="valueVol"
+        step="1"
+        min="0"
+        max="100"
+      />
     </div>
   </div>
 </template>
@@ -55,10 +60,11 @@ var totalSeconds = 0;
 export default {
   data() {
     return {
+      valueVol: 0,
       stateBtn: true,
       timer: {
         minutes: 0,
-        seconds: 0,
+        seconds: 15,
       },
       songActually: {},
       songLast: {},
@@ -73,16 +79,24 @@ export default {
           '{"event":"command","func":"pauseVideo","args":""}',
           "*"
         );
+        this.actionMusic("change");
         this.changeBtnPlay(this.stateBtn);
       } else {
         videoYT.contentWindow.postMessage(
           '{"event":"command","func":"playVideo","args":""}',
           "*"
         );
+        this.actionMusic("change");
         this.changeBtnPlay(this.stateBtn);
       }
     },
-
+    volumeVideo(valVolumen) {
+      let videoYT = document.getElementById("videoYT");
+      videoYT.contentWindow.postMessage(
+        `{"event":"command","func":"setVolume","args":[${valVolumen}]}`,
+        "*"
+      );
+    },
     getSong(song) {
       this.songLast == ""
         ? (this.songLast = {
@@ -105,7 +119,8 @@ export default {
       ).innerHTML = `${this.songActually.duration.minutes}:${this.songActually.duration.seconds}`;
 
       this.totalSeconds = this.convertTime(this.songActually.duration);
-      this.actionMusic();
+      this.volumeVideo(this.valueVol)
+      this.actionMusic("start");
     },
     convertTime(arr) {
       let secs = 0;
@@ -113,7 +128,6 @@ export default {
       return secs;
     },
     myTimer() {
-      console.log(`${min}:${sec}`);
       var ini = document.getElementById("ini");
       if (totalSeconds <= this.totalSeconds) {
         if (sec == 60) {
@@ -121,40 +135,46 @@ export default {
           sec = 0;
         }
         ini.innerHTML = sec > 9 ? `${min}:${sec}` : `${min}:0${sec}`;
-        this.timer.seconds = sec;
         sec++;
         totalSeconds++;
       }
     },
     restartDataFromTimer() {
-      document.getElementById("fill").style.animation = ``;
+      let fill = document.getElementById("fill");
+      fill.style.animation = "none";
+      fill.offsetHeight;
+      fill.style.animation = null;
+      totalSeconds = 0;
       sec = 0;
       min = 0;
-      document.getElementById(
-        "fill"
-      ).style.animation = `bar-progress ${this.totalSeconds}s steps(${this.totalSeconds},end)`;
+      fill.style.animation = `bar-progress ${this.totalSeconds}s steps(${this.totalSeconds},end)`;
     },
-    actionMusic() {
-      this.changeBtnPlay();
-      this.restartDataFromTimer();
-      clearInterval(myVar);
-      myVar = setInterval(this.myTimer, 1000);
-    },
+    actionMusic(stateVideo) {
+      if (stateVideo == "change") {
+        if (this.stateBtn) {
+          document.getElementById("fill").classList.add("paused");
+          clearInterval(myVar);
+        } else {
+          document.getElementById("fill").classList.remove("paused");
+          myVar = setInterval(this.myTimer, 1000);
+        }
+      } else {
 
+        this.restartDataFromTimer();
+        clearInterval(myVar);
+        myVar = setInterval(this.myTimer, 1000);
+      }
+    },
     changeBtnPlay(state) {
       const btn = document.getElementById("btnPlay");
       if (state) {
         btn.innerHTML = `<i class="fas fa-play"></i>`;
-        console.log("pausa!")
         this.stateBtn = false;
       } else {
         btn.innerHTML = `<i class="fas fa-pause"></i>`;
-        console.log("siga!")
         this.stateBtn = true;
       }
     },
-  },
-  mounted() {
   },
 };
 </script>
