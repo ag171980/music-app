@@ -2,14 +2,20 @@
   <div class="app">
     <router-view />
     <bottombar
-      v-if="this.$route.name != 'Login' && this.$route.name != 'Signin' && this.$route.name != 'Index'"
+      v-if="
+        this.$route.name != 'Login' &&
+        this.$route.name != 'Signin' &&
+        this.$route.name != 'Index'
+      "
       ref="bottombar"
     />
   </div>
+
   <!-- <Sidebar /> -->
 </template>
 <script>
 import bottombar from "./components/Bottombar.vue";
+
 export default {
   name: "App",
   components: {
@@ -19,6 +25,14 @@ export default {
     asd() {
       alert("asd");
     },
+  },
+  mounted() {
+    let recaptchaScript = document.createElement("script");
+    recaptchaScript.setAttribute(
+      "src",
+      "https://kit.fontawesome.com/5b23b3e9e6.js"
+    );
+    document.head.appendChild(recaptchaScript);
   },
 };
 </script>

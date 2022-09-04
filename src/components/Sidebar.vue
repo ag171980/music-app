@@ -1,13 +1,18 @@
 <template>
   <div class="sidebar">
-    <img src="../assets/logo.png" class="logo" alt="logo app music spotifake" />
+    <!-- <div class="logo">
+      <img src="../assets/logo.png" alt="logo app music spotifake" />
+      <h2>SPOTI <span>FAKE</span></h2>
+    </div> -->
     <nav class="menu">
       <router-link to="/home" class="menu-item">
-        <i class="fas fa-home"></i>
+        <!-- <i class="fas fa-home"></i> -->
+        <i class="bi bi-house-door"></i>
         <p>Home</p>
       </router-link>
       <router-link to="/search" class="menu-item">
-        <i class="fas fa-search"></i>
+        <!-- <i class="fas fa-search"></i> -->
+        <i class="bi bi-search"></i>
         <p>Search</p>
       </router-link>
       <div
@@ -16,7 +21,8 @@
         @click="modalCreatePlaylist()"
         v-if="nameActualPage == 'Home'"
       >
-        <i class="fas fa-plus"></i>
+        <!-- <i class="fas fa-plus"></i> -->
+        <i class="bi bi-plus"></i>
         <p>Create Playlist</p>
       </div>
     </nav>
@@ -78,11 +84,11 @@
         :key="idx"
       >
         <router-link
-          :to="`/playlist?id=${playlist.id}`"
-          @click="this.$parent.getData(playlist.id)"
+          :to="`/playlist?id=${playlist.id_playlists}`"
+          @click="this.$parent.getData(playlist.id_playlists)"
           class="description"
         >
-          <p>{{ playlist.name }}</p>
+          <p>{{ playlist.nombre_playlist }}</p>
         </router-link>
       </div>
     </div>
@@ -99,35 +105,23 @@ export default {
       nameActualPage: this.$parent.name,
       userActual: [],
       myPlaylists: [],
-      newPlaylist:{
-        name:"",
-        description:"",
-        img:{}
+      newPlaylist: {
+        name: "",
+        description: "",
+        img: {},
       },
+      imgimg: "",
       stateModal: true,
     };
   },
   methods: {
     dataFiles(event) {
-      const reader = new FileReader();
-      const file = event.target.files[0];
-      let nameImg = event.target.files[0].name;
-      let rawImg;
-      let arrData = {
-        name: nameImg,
-        dataBase64: "",
-      };
-      reader.onloadend = () => {
-        rawImg = reader.result;
-        arrData.dataBase64 = rawImg;
-      };
-      reader.readAsDataURL(file);
-      this.newPlaylist.img = arrData;
+      this.newPlaylist.img = event.target.files[0];
     },
     getPlaylists() {
       axios
         .get(
-          `http://localhost/api/playlist/get_your_playlists/${this.userActual.id}`
+          `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`
         )
         .then((result) => {
           this.myPlaylists = result.data;
@@ -135,18 +129,18 @@ export default {
     },
 
     createPlaylist() {
-      const playlist = {
-        userCreator: this.dataUser,
-        idUser: this.dataUser.id,
-        name: this.newPlaylist.name,
-        description: this.newPlaylist.description,
-        dataImg: this.newPlaylist.img,
-      };
+      let formData = new FormData();
+      formData.append("idUser", this.dataUser.id_usuario);
+      formData.append("file", this.newPlaylist.img);
+      formData.append("name", this.newPlaylist.name);
+      formData.append("description", this.newPlaylist.description);
+
       axios
-        .post(
-          "http://localhost/api/playlist/insert_playlist",
-          JSON.stringify(playlist)
-        )
+        .post("http://localhost:8000/playlists/createPlaylist", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((result) => {
           console.log(result.data);
           this.$parent.getPlaylists();
@@ -169,6 +163,15 @@ export default {
     },
   },
   mounted() {
+    let iconsBs = document.createElement("link");
+    iconsBs.setAttribute("rel", "stylesheet");
+    iconsBs.setAttribute(
+      "href",
+      "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+    );
+
+    document.head.appendChild(iconsBs);
+
     if (localStorage.getItem("dataUser")) {
       this.userActual = JSON.parse(localStorage.getItem("dataUser"));
     } else {

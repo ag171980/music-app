@@ -3,20 +3,18 @@
     <div class="space"></div>
     <sidebar :dataUser="userActual"></sidebar>
     <div class="page">
-      <!-- <div class="header-primary">
-        <h1>Welcome User</h1>
-        <div class="user-settings">
-          <i class="fas fa-user"></i>
-          <p>{{userActual.fullname}}</p>
-          <i class="fas fa-sort-down"></i>
-        </div>
-      </div> -->
       <headerUser :dataUser="userActual" />
+      <div class="headd">
+        <!-- <img class="bg" src="../assets/home2.png" alt="" /> -->
+      </div>
       <div class="recent-playlists">
         <div class="playlist" v-for="(playlist, idx) in playlists" :key="idx">
-          <router-link :to="`/playlist?id=${playlist.id}`" class="description">
-            <img :src="playlist.dataImg.dataBase64" height="100" alt="" />
-            <p>{{ playlist.name }}</p>
+          <router-link
+            :to="`/playlist?id=${playlist.id_playlists}`"
+            class="description"
+          >
+            <img :src="`./thumbnail_playlists/` + playlist.thumbnail_playlist" alt="" />
+            <p>{{ playlist.nombre_playlist }}</p>
           </router-link>
           <button><i class="fas fa-play"></i></button>
         </div>
@@ -33,7 +31,7 @@ import headerUser from "../components/HeaderUser.vue";
 export default {
   components: {
     sidebar,
-    
+
     headerUser,
   },
   data() {
@@ -47,7 +45,7 @@ export default {
     getPlaylists() {
       axios
         .get(
-          `http://localhost/api/playlist/get_your_playlists/${this.userActual.id}`
+          `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`
         )
         .then((result) => {
           this.playlists = result.data;

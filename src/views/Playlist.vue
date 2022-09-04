@@ -6,7 +6,9 @@
       <headeruser :dataUser="userActual" />
       <div class="header-playlist">
         <div class="photo-playlist">
-          <img :src="img" height="250" alt="" />
+          <div v-if="userActual.id_usuario == data_playlist.id_user_creator">
+            <img :src="data_playlist.img" alt="" />
+          </div>
           <div class="edit-image">
             <i class="fas fa-pen"></i>
             <p>Choose Image</p>
@@ -14,10 +16,10 @@
         </div>
         <div class="description-playlist">
           <p>Playlist</p>
-          <h1>{{ data_playlist.name }}</h1>
-          <p id="description">{{ data_playlist.description }}</p>
+          <h1 @click="editDataPlaylist">{{ data_playlist.nombre_playlist }}</h1>
+          <p id="description">{{ data_playlist.descripcion_playlist }}</p>
           <p class="details">
-            <b>{{ creatorPlaylist.nameCreator }}</b> •
+            <span id="nameCreator">{{ creatorPlaylist.name_creator }}</span> •
             {{ songsPlaylist.length }} songs • {{ durationPlaylist }}
           </p>
         </div>
@@ -68,6 +70,7 @@
             <p id="number">#</p>
             <p id="title">TITLE</p>
             <p id="artist">ARTIST</p>
+            <p id="addedAt">ADDED AT</p>
             <p id="duration"><i class="far fa-clock"></i></p>
           </div>
           <div
@@ -75,21 +78,35 @@
             v-for="(songs, ids) in songsPlaylist"
             :key="ids"
           >
-            <div class="music" @dblclick="showAlert(songs.name, songs.artist)">
+            <div
+              class="music"
+              @dblclick="showAlert(songs.nombre_cancion, songs.artista_cancion)"
+            >
               <div class="number">
                 <p>{{ ids + 1 }}</p>
-                <i @click="putVideo(songs)" class="fas fa-play"></i>
+                <i @click="putVideo(songs, ids)" class="fas fa-play"></i>
               </div>
               <div class="description-music">
-                <img :src="songs.miniature" height="40" alt="" />
-                <h2>{{ songs.name }}</h2>
+                <img
+                  :src="songs.thumbnail_cancion"
+                  height="40"
+                  width="40"
+                  alt=""
+                />
+                <h2 class="songName">{{ songs.nombre_cancion }}</h2>
               </div>
-              <p class="artist">{{ songs.artist }}</p>
+              <p class="artist">{{ songs.artista_cancion }}</p>
+              <p class="addedAt">9/12/18</p>
               <div class="duration">
                 <p id="duration">
-                  {{ songs.duration.minutes }}:{{ songs.duration.seconds }}
+                  {{ parseInt(songs.duracion_cancion / 60) }}:{{
+                    parseInt(songs.duracion_cancion % 60)
+                  }}
                 </p>
               </div>
+              <p class="options">
+                <i class="fas fa-ellipsis-h"></i>
+              </p>
             </div>
           </div>
         </div>
@@ -124,8 +141,13 @@ export default {
     };
   },
   methods: {
-    putVideo(arrSong) {
-
+    editDataPlaylist() {
+      console.log();
+    },
+    putVideo(arrSong, id) {
+      let nameSongOfPlaylistToStart =
+        document.getElementsByClassName("songName")[id];
+      nameSongOfPlaylistToStart.style.color = "#29e925";
       let videoYoutube = document.getElementById("videoYT");
       videoYoutube.src = `https://www.youtube.com/embed/${arrSong.id}?&autoplay=1&controls=1&enablejsapi=1`;
 
@@ -159,32 +181,56 @@ export default {
         .classList.remove("show");
       this.stateFilters = true;
     },
-    getData(id) {
+    getDataPlaylist(id) {
       axios
-        .get(`http://localhost/api/playlist/get_playlist_for_id/${id}`)
+        .get(`http://localhost:8000/playlists/getPlaylistForId/${id}`)
         .then((res) => {
-          this.creatorPlaylist = res.data[0].userCreator;
+          // console.log(res.data)
+          this.creatorPlaylist = {
+            id_creator: res.data[0].id_user_creator,
+            name_creator: res.data.nombre_creador,
+          };
           this.data_playlist = res.data[0];
-          this.img = res.data[0].dataImg.dataBase64;
-          // console.log(this.data_playlist);
-          this.songsPlaylist = res.data[0].songs;
+          this.data_playlist.img = res.data[0].thumbnail_playlist;
+        });
+    },
+
+    getSongsOfPlaylist(id) {
+      axios
+        .get(`http://localhost:8000/playlists/getSongsByIdPlaylist/${id}`)
+        .then((res) => {
+          console.log(res.data);
+
+          this.songsPlaylist = res.data;
           this.totalDurationPlaylist();
         });
+    },
+    getData(id) {
+      this.getDataPlaylist(id);
+      this.getSongsOfPlaylist(id);
     },
     totalDurationPlaylist() {
       let minutes = 0,
         seconds = 0;
-      let songs = this.data_playlist.songs;
-      for (let i = 0; i < songs.length; i++) {
-        seconds += parseInt(songs[i].duration.seconds);
-        minutes += parseInt(songs[i].duration.minutes);
-      }
-      if (seconds > 60) {
-        minutes += parseInt(seconds / 60);
-        seconds = seconds % 60;
-      }
+      // let songs = this.data_playlist.songs;
+      let songs = this.songsPlaylist;
+
+      // for (let i = 0; i < songs.length; i++) {
+      //   seconds += parseInt(songs[i].duration.seconds);
+      //   minutes += parseInt(songs[i].duration.minutes);
+      // }
+      // if (seconds > 60) {
+      //   minutes += parseInt(seconds / 60);
+      //   seconds = seconds % 60;
+      // }
       // console.log(seconds % 60);
-      this.durationPlaylist = `${minutes} min ${seconds} secs`;
+      let totalSeconds = 0;
+      for (let i = 0; i < songs.length; i++) {
+        totalSeconds += songs[i].duracion_cancion;
+      }
+      minutes = parseInt(totalSeconds / 60);
+      seconds = totalSeconds % 60;
+      this.durationPlaylist = `${minutes} min ${seconds} s`;
     },
   },
   mounted() {
@@ -195,7 +241,6 @@ export default {
     }
 
     this.getData(this.id_playlist);
-
     let recaptchaScript = document.createElement("script");
     recaptchaScript.setAttribute(
       "src",

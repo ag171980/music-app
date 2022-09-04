@@ -1,7 +1,9 @@
 <template>
   <div class="headerUser">
     <div class="header-primary">
-      <h1 v-if="namePageActual == 'Home'">Welcome {{ dataUser.fullname }}</h1>
+      <h1 v-if="namePageActual == 'Home'">
+        Welcome <span> {{ dataUser.nombre_usuario }}</span>
+      </h1>
       <div class="arrows">
         <button v-if="namePageActual != 'Home'" href="">
           <i class="fas fa-chevron-left"></i>
@@ -20,8 +22,8 @@
       </div>
       <div class="user-settings" @click="openModalSettings()">
         <i class="fas fa-user"></i>
-        <p>{{ dataUser.fullname }}</p>
-        <i class="fas fa-sort-down"></i>
+        <p>{{ dataUser.nombre_usuario }}</p>
+        <i class="ar fas fa-sort-down"></i>
       </div>
     </div>
     <div :class="{ 'modal-settings': true, modalOn: stateSettings }">
@@ -64,6 +66,6 @@ export default {
           console.log(res.data);
         });
     },
-  }
+  },
 };
 </script>

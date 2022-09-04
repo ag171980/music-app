@@ -6,6 +6,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: $font-sen;
 }
 .playlist {
     display: flex;
@@ -14,12 +15,12 @@
     align-items: flex-start;
     background-color: #121212;
     .space {
-        width: 13%;
+        width: 15%;
     }
     @include sidebar;
     .myplaylist {
         height: 100vh;
-        width: 85vw;
+        width: 80%;
         @include user-head;
         .header-playlist {
             position: relative;
@@ -31,22 +32,26 @@
             padding: 20px 0px;
             .photo-playlist {
                 position: relative;
+                img {
+                    height: 250px;
+                    width: 250px;
+                }
                 .edit-image {
                     display: none;
                     i,
                     p {
-                        color: white;
+                        color: rgb(255, 255, 255);
                     }
                     i {
                         font-size: 30px;
                     }
                     p {
-                        font-family: $font-open-sans;
                         padding: 10px 0;
                     }
                 }
-                img {
-                    &:hover + .edit-image {
+
+                &:hover {
+                    .edit-image {
                         cursor: pointer;
                         display: flex;
                         flex-direction: column;
@@ -55,7 +60,8 @@
                         position: absolute;
                         top: 0;
                         left: 0;
-                        background-color: rgba(0, 0, 0, 0.8);
+                        z-index: 2;
+                        background-color: rgba(0, 0, 0, 1);
                         height: 100%;
                         width: 100%;
                     }
@@ -67,32 +73,34 @@
                 h1,
                 small {
                     color: white;
-                    font-family: $font-open-sans;
                 }
+
                 p {
                     text-transform: uppercase;
-                    font-weight: bolder;
-                    font-size: 14px;
+                    font-size: 16px;
                     text-align: start;
                 }
                 h1 {
                     font-size: 70px;
-                    font-weight: bolder;
+                    font-weight: bold;
+                    text-transform: uppercase;
                 }
                 .details {
                     padding: 15px 0;
-                    font-weight: normal;
                     text-transform: none;
+                    #nameCreator {
+                        color: #29e925;
+                    }
                 }
                 #description {
-                    font-weight: normal;
+                    font-weight: lighter;
                     text-transform: none;
-                    font-size: 12px;
+                    font-size: 17px;
                     opacity: 0.6;
                     text-align: start;
                 }
             }
-            #videoYT{
+            #videoYT {
                 position: absolute;
                 align-self: center;
                 justify-self: center;
@@ -210,7 +218,8 @@
                             display: flex;
                             flex-direction: column;
                             position: fixed;
-                            right: 40px;
+                            z-index: 2;
+                            right: 30px;
                         }
                     }
                 }
@@ -220,13 +229,14 @@
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                width: 85vw;
+                width: 80vw;
                 // background: red;
                 padding: 10px 0px;
                 border-bottom: 2px solid #252525;
                 p {
                     color: white;
                     opacity: 0.5;
+                    font-size: 15px;
                 }
                 #number,
                 #duration,
@@ -242,7 +252,10 @@
                     width: 45%;
                 }
                 #artist {
-                    width: 40%;
+                    width: 20%;
+                }
+                #addedAt {
+                    width: 20%;
                 }
                 #duration {
                     width: 10%;
@@ -259,7 +272,7 @@
                     flex-direction: row;
                     justify-content: space-around;
                     align-items: center;
-                    width: 85vw;
+                    width: 80vw;
                     padding: 10px 0px;
                     &:hover {
                         background: rgba(236, 236, 236, 0.2);
@@ -267,7 +280,7 @@
                             p {
                                 display: none;
                             }
-                            i{
+                            i {
                                 display: flex;
                                 flex-direction: row;
                                 justify-content: center;
@@ -278,6 +291,7 @@
                     .description-music h2,
                     .number,
                     .artist,
+                    .addedAt,
                     .duration {
                         color: white;
                         opacity: 0.8;
@@ -295,18 +309,32 @@
                     }
                     .number {
                         width: 5%;
-                        i{
+                        i {
                             padding: 6px;
                             display: none;
                             text-align: center;
                         }
                     }
                     .artist {
-                        width: 40%;
+                        width: 20%;
                         text-align: start;
+                    }
+                    .addedAt {
+                        width: 20%;
                     }
                     .duration {
                         width: 10%;
+                    }
+                }
+                i {
+                    color: rgba($color: #fff, $alpha: 0.6);
+                    position: relative;
+                    right: 10px;
+                    opacity: 0;
+                }
+                &:hover {
+                    i {
+                        opacity: 1;
                     }
                 }
             }

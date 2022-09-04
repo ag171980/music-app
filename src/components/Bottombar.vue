@@ -1,9 +1,14 @@
 <template>
   <div class="bottombar">
     <div class="music">
-      <img :src="songActually.img" height="70" alt="" />
+      <div v-if="songActually.img != 'empty'">
+        <img :src="songActually.img" height="60" width="60" />
+      </div>
+
       <div class="description">
-        <h4>{{ songActually.name }}</h4>
+        <div class="title">
+          <h4>{{ songActually.name }}</h4>
+        </div>
         <p>{{ songActually.artist }}</p>
       </div>
     </div>
@@ -11,13 +16,14 @@
       id="videoYT"
       width="120"
       height="85"
-      src="https://www.youtube.com/embed/r63YPAW2G9M"
+      src=""
       title="YouTube video player"
       frameborder="0"
       autoplay
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
     ></iframe>
+    <!-- https://www.youtube.com/embed/r63YPAW2G9M -->
 
     <div class="controls">
       <div class="controls-top">
@@ -27,18 +33,21 @@
         </button>
       </div>
       <div class="controls-bottom">
-        <span id="ini">0:00</span>
+        <p id="ini">0:00</p>
         <div id="bar">
           <div id="fill" class="fill-bar">
             <div id="ball"></div>
           </div>
         </div>
-        <span id="durationSong">0:00</span>
+        <p id="durationSong">0:00</p>
       </div>
     </div>
     <div class="volumen">
       <i v-if="valueVol == 0" class="fas fa-volume-mute"></i>
-      <i v-else-if="valueVol < 50 && valueVol != 0" class="fas fa-volume-down"></i>
+      <i
+        v-else-if="valueVol < 50 && valueVol != 0"
+        class="fas fa-volume-down"
+      ></i>
       <i v-else-if="valueVol >= 50" class="fas fa-volume-up"></i>
       <input
         type="range"
@@ -48,6 +57,7 @@
         min="0"
         max="100"
       />
+      <i class="fas fa-expand-alt"></i>
     </div>
   </div>
 </template>
@@ -61,12 +71,15 @@ export default {
   data() {
     return {
       valueVol: 0,
+      stateModalEditDataPlaylist: true,
       stateBtn: true,
       timer: {
         minutes: 0,
         seconds: 15,
       },
-      songActually: {},
+      songActually: {
+        img: "empty",
+      },
       songLast: {},
       totalSeconds: 0,
     };
@@ -100,18 +113,24 @@ export default {
     getSong(song) {
       this.songLast == ""
         ? (this.songLast = {
-            img: song.miniature,
-            name: song.name,
-            artist: song.artist,
-            duration: song.duration,
+            img: song.thumbnail_cancion,
+            name: song.nombre_cancion,
+            artist: song.artista_cancion,
+            duration: {
+              minutes: parseInt(song.duracion_cancion / 60),
+              seconds: parseInt(song.duracion_cancion % 60),
+            },
           })
         : (this.songLast = this.songActually);
 
       this.songActually = {
-        img: song.miniature,
-        name: song.name,
-        artist: song.artist,
-        duration: song.duration,
+        img: song.thumbnail_cancion,
+        name: song.nombre_cancion,
+        artist: song.artista_cancion,
+        duration: {
+          minutes: parseInt(song.duracion_cancion / 60),
+          seconds: parseInt(song.duracion_cancion % 60),
+        },
       };
 
       document.getElementById(
@@ -119,7 +138,7 @@ export default {
       ).innerHTML = `${this.songActually.duration.minutes}:${this.songActually.duration.seconds}`;
 
       this.totalSeconds = this.convertTime(this.songActually.duration);
-      this.volumeVideo(this.valueVol)
+      this.volumeVideo(this.valueVol);
       this.actionMusic("start");
     },
     convertTime(arr) {
@@ -137,6 +156,10 @@ export default {
         ini.innerHTML = sec > 9 ? `${min}:${sec}` : `${min}:0${sec}`;
         sec++;
         totalSeconds++;
+      } else {
+        totalSeconds = 0;
+        sec = 0;
+        min = 0;
       }
     },
     restartDataFromTimer() {
@@ -159,7 +182,6 @@ export default {
           myVar = setInterval(this.myTimer, 1000);
         }
       } else {
-
         this.restartDataFromTimer();
         clearInterval(myVar);
         myVar = setInterval(this.myTimer, 1000);

@@ -1,61 +1,70 @@
 @import "partials/fonts.scss";
+@import "partials/components";
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 .index {
-    
-
-    .show {
+    .content-formulario {
+        height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        font-family: $font-sen;
         .formulario {
-            background-color: rgba(0, 0, 0, 0.9);
-            width: 500px;
+            background-color: rgba(0, 0, 0, 0.75);
+            height: 700px;
+            width: 1000px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             h1 {
-                background: linear-gradient(to right top, #009641, #37ac3e, #5cc137, #81d72a, #a8eb12);
-                font-family: $font-open-sans;
-                text-align: center;
-                padding: 10px 0px;
-                justify-content: flex-start;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
+                font-weight: bold;
+                font-size: 40px;
+                color: white;
             }
             .form {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
+                margin-top: 80px;
+
                 .input-group {
                     position: relative;
 
                     label {
-                        background: linear-gradient(to right top, #009641, #37ac3e, #5cc137, #81d72a, #a8eb12);
-                        font-family: $font-open-sans;
                         position: absolute;
                         top: 25px;
                         left: 10px;
                         transition: 0.3s all;
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
+                        font-size: 17px;
+                        color: #1fbe1c;
+
+                        font-family: $font-sen;
+                    }
+                    input:-webkit-autofill,
+                    input:-webkit-autofill:hover,
+                    input:-webkit-autofill:focus {
+                        -webkit-text-fill-color: #fff;
+                        transition: background-color 1000000000s ease-in-out 0s;
+                        background-color: red;
                     }
                     .input {
                         background: none;
                         border: none;
-                        border-bottom: 2px solid #1bb71e;
+                        border-bottom: 2px solid white;
+                        font-family: $font-sen;
                         color: white;
-                        font-family: $font-open-sans;
                         outline: none;
                         margin: 20px auto;
                         padding: 12px 12px;
-                        width: 300px;
+                        width: 500px;
+                        // width: 60vw;
+                        font-size: 18px;
                         &:focus + label {
                             top: 5px;
                         }
@@ -68,7 +77,6 @@
                     padding: 10px;
                     p {
                         color: white;
-                        font-family: $font-open-sans;
                         text-align: start;
                     }
                     ul {
@@ -79,26 +87,30 @@
                         }
                     }
                 }
-                button {
-                    background: linear-gradient(to right top, #009641, #37ac3e, #5cc137, #81d72a, #a8eb12);
-                    border: none;
-                    border-radius: 20px;
-                    color: white;
-                    font-family: $font-open-sans;
-                    font-size: 14px;
-                    padding: 12px 18px;
-                    transition: 0.3s all;
+                .btn-sign {
+                    @include btn-green;
+                    margin-top: 25px;
+                    width: 100%;
+                    transition: 0.5s all;
                     &:hover {
                         cursor: pointer;
-                        transform: scale(1.08);
+                        transform: scale(1.02);
+                    }
+                    #spinner {
+                        animation: spinner 1.5s infinite;
                     }
                 }
+                .response {
+                    height: 50px;
+                    width: 50px;
+                    border-radius: 25px;
+                    transition: 0.5s all;
+                }
                 a {
-                    margin: 10px auto;
+                    margin: 20px auto 0;
                     text-decoration: none;
                     color: white;
-                    font-family: $font-open-sans;
-                    font-size: 13px;
+                    font-size: 16px;
                     &:hover {
                         cursor: pointer;
                         text-decoration: underline;
@@ -106,47 +118,127 @@
                 }
             }
         }
-        .message {
-            background-color: rgba(0, 0, 0, 0.9);
-            width: 100vw;
-            height: 100vh;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: none;
-            transition: 0.5s all;
-            .modal {
-                width: 500px;
-                height: 300px;
-                background-color: white;
-                padding: 15px;
-                border-radius: 10px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: space-around;
-                p {
-                    font-size: 22px;
+    }
+    .message {
+        // background-color: rgba(0, 0, 0, 0.4);
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        opacity: 0;
+        visibility: hidden;
+        z-index: 11;
+        transition: 0.5s all;
+        .modal {
+            height: 60px;
+            width: 98vw;
+            background-color: rgba(0, 0, 0, 0.75);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            z-index: 12;
+
+            lottie-player {
+                width: 40px !important  ;
+            }
+            p {
+                font-size: 18px;
+                color: white;
+                // font-size: 22px;
+                padding: 0 15px;
+            }
+            button {
+                background: none;
+                border: none;
+                outline: none;
+                position: absolute;
+                right: 15px;
+                // display: none;
+                font-size: 20px;
+                transition: 0.5s all;
+                padding: 8px;
+                i {
+                    color: white;
                 }
-                a {
-                    color: black;
-                    text-decoration: none;
-                    transition: 0.3s all;
-                    border-radius: 25px;
-                    font-family: $font-open-sans;
-                    padding: 8px;
-                    &:hover {
-                        background: linear-gradient(to right top, #009641, #37ac3e, #5cc137, #81d72a, #a8eb12);
-                        color: white;
-                    }
+                &:hover {
+                    cursor: pointer;
+                    transform: scale(1.1);
                 }
             }
         }
-        .show-modal {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
+    }
+    .show-modal {
+        opacity: 1;
+        visibility: visible;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+    }
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 1440px) {
+    .index .content-formulario .formulario {
+        height: 550px;
+        width: 800px;
+        .form {
+            margin-top: 50px;
+        }
+    }
+}
+@media (max-width: 1024px) {
+    .index .content-formulario .formulario {
+        height: 550px;
+        width: 700px;
+        .form {
+            margin-top: 30px;
+        }
+    }
+}
+@media (max-width: 768px) {
+    .index .content-formulario .formulario {
+        height: 550px;
+        width: 90vw;
+        .form .input-group .input {
+            width: 60vw;
+        }
+    }
+}
+@media (max-width: 550px) {
+    .index .content-formulario .formulario {
+        h1 {
+            font-size: 30px;
+        }
+    }
+}
+@media (max-width: 425px) {
+    .index .content-formulario .formulario {
+        .form .input-group .input {
+            width: 70vw;
+        }
+    }
+}
+@media (max-width: 375px) {
+    .index .content-formulario .formulario {
+        h1 {
+            font-size: 27px;
         }
     }
 }

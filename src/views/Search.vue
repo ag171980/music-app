@@ -35,12 +35,12 @@
               @click="selectPlaylist(idp)"
             >
               <img
-                :src="playlist.dataImg.dataBase64"
+                :src="`assets/${playlist.thumbnail_playlist}`"
                 height="50"
                 width="50"
                 alt=""
               />
-              <p>{{ playlist.name }}</p>
+              <p>{{ playlist.nombre_playlist }}</p>
             </div>
           </div>
           <p class="alert">{{ alertPlaylistNotSelected }}</p>
@@ -97,7 +97,9 @@ export default {
     selectPlaylist(id) {
       this.clearSelected();
       this.playlistSelected = this.playlists[id];
-      this.songAddToPlaylist.idPlaylist = this.playlists[id].id;
+      this.songAddToPlaylist.idPlaylist = this.playlists[id].id_playlists;
+      // console.log(this.playlists[id])
+      // this.songAddToPlaylist.song.asd = this.playlists[id].id_playlist;
       document.getElementsByClassName("playlist")[id].classList.add("selected");
     },
     clearSelected() {
@@ -169,7 +171,7 @@ export default {
     addToPlaylistSelected() {
       axios
         .post(
-          `http://localhost/api/playlist/add_song_in_playlist`,
+          `http://localhost:8000/playlists/addSongToPlaylist`,
           JSON.stringify(this.songAddToPlaylist)
         )
         .then((res) => {
@@ -189,6 +191,7 @@ export default {
           id: this.resultsSearch[idSongSelected].id.videoId,
           artist: this.resultsSearch[idSongSelected].snippet.channelTitle,
           name: this.resultsSearch[idSongSelected].snippet.title,
+          
           miniature:
             this.resultsSearch[idSongSelected].snippet.thumbnails.high.url,
         };
@@ -202,7 +205,7 @@ export default {
     getPlaylists() {
       axios
         .get(
-          `http://localhost/api/playlist/get_your_playlists/${this.userActual.id}`
+          `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`
         )
         .then((result) => {
           console.log(result.data);
@@ -218,7 +221,7 @@ export default {
     }
 
     this.getPlaylists();
-
+console.log(this.userActual.id_usuario)
     let recaptchaScript = document.createElement("script");
     recaptchaScript.setAttribute(
       "src",
