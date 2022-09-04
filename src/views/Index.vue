@@ -10,15 +10,7 @@
           SPOTIFAKE is a non-profit music web application made as a practice by
           a Fullstack Developer.
         </p>
-        <iframe
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/oI8Ltv0jE-I"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
+        
         <!-- https://www.youtube.com/embed/A_g3lMcWVy0?&autoplay=1&controls=1&enablejsapi=1 -->
         <div
           class="
