@@ -100,11 +100,12 @@ export default {
           pass: this.pass,
         };
         // let self = this;
-
+        const urlTest = "http://127.0.0.1:8000/usuarios/createAccount"
+        const urlProd = "http://18.234.165.10/index.php/usuarios/createAccount"
         setTimeout(function () {
           axios
             .post(
-              "http://127.0.0.1:8000/usuarios/createAccount",
+              urlProd,
               JSON.stringify(data)
             )
             .then((result) => {
