@@ -101,7 +101,7 @@ export default {
         };
         // let self = this;
         // const urlTest = "http://127.0.0.1:8000/usuarios/createAccount"
-        const urlProd = "https://spottifakeapi/index.php/usuarios/createAccount";
+        const urlProd = "https://spottifakeapi.tk/index.php/usuarios/createAccount";
         
         setTimeout(function () {
           axios
