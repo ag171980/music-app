@@ -14,7 +14,7 @@
             class="description"
           >
             <img
-              :src="`./thumbnail_playlists/` + playlist.thumbnail_playlist"
+              :src="`/home/ubuntu/music-app/src/assets/thumbnail_playlists/` + playlist.thumbnail_playlist"
               alt=""
             />
             <p>{{ playlist.nombre_playlist }}</p>
