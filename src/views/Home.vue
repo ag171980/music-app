@@ -43,6 +43,8 @@ export default {
   },
   methods: {
     getPlaylists() {
+      // const urlTest = `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
+      const urlProd = `https://spottifakeapi.tk/index.php/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
       axios
         .get(
           `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`

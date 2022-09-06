@@ -88,60 +88,60 @@ export default {
           pass: this.pass,
         };
         let self = this;
+        // const urlTest = "http://127.0.0.1:8000/usuarios/login"
+        const urlProd = "https://spottifakeapi.tk/index.php/usuarios/login";
         setTimeout(function () {
-          axios
-            .post("http://127.0.0.1:8000/usuarios/login", JSON.stringify(data))
-            .then((result) => {
-              //Creacion del modal
-              let recaptchaScript = document.createElement("script");
-              recaptchaScript.setAttribute(
-                "src",
-                "https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"
-              );
-              document.head.appendChild(recaptchaScript);
+          axios.post(urlProd, JSON.stringify(data)).then((result) => {
+            //Creacion del modal
+            let recaptchaScript = document.createElement("script");
+            recaptchaScript.setAttribute(
+              "src",
+              "https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"
+            );
+            document.head.appendChild(recaptchaScript);
 
-              document
-                .getElementsByClassName("message")[0]
-                .classList.add("show-modal");
-              // console.log(result.data);
-              if (result.data.msg == "Inicio de sesión exitosa.") {
-                document.getElementById(
-                  "modal"
-                ).innerHTML = `<lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_s8zcfby1.json" background="transparent" speed="1" style="width: 150px; height: 150px;" autoplay></lottie-player>
+            document
+              .getElementsByClassName("message")[0]
+              .classList.add("show-modal");
+            // console.log(result.data);
+            if (result.data.msg == "Inicio de sesión exitosa.") {
+              document.getElementById(
+                "modal"
+              ).innerHTML = `<lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_s8zcfby1.json" background="transparent" speed="1" style="width: 150px; height: 150px;" autoplay></lottie-player>
               <p>Inicio de sesión exitoso</p>`;
-                sign.innerHTML = '<i class="fas fa-check"></i>';
-                sign.classList.add("response");
-                setTimeout(function () {
-                  localStorage.setItem(
-                    "dataUser",
-                    JSON.stringify(result.data.usuario)
-                  );
+              sign.innerHTML = '<i class="fas fa-check"></i>';
+              sign.classList.add("response");
+              setTimeout(function () {
+                localStorage.setItem(
+                  "dataUser",
+                  JSON.stringify(result.data.usuario)
+                );
 
-                  self.$router.push("/home");
-                }, 2000);
-              } else {
-                document.getElementById(
-                  "modal"
-                ).innerHTML = `<lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_ltbsyn9h.json" background="transparent" speed="1" style="width: 150px; height: 150px;" autoplay></lottie-player>
+                self.$router.push("/home");
+              }, 2000);
+            } else {
+              document.getElementById(
+                "modal"
+              ).innerHTML = `<lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_ltbsyn9h.json" background="transparent" speed="1" style="width: 150px; height: 150px;" autoplay></lottie-player>
               <p>Error, email o contraseña incorrecta</p>
               <a href="/login">Back</a>`;
-                sign.innerHTML = '<i class="fas fa-times"></i>';
-                sign.classList.add("response");
-                sign.style.backgroundColor = "red";
-              }
+              sign.innerHTML = '<i class="fas fa-times"></i>';
+              sign.classList.add("response");
+              sign.style.backgroundColor = "red";
+            }
 
+            setTimeout(function () {
+              // self.$router.push("/login");
+              document
+                .getElementsByClassName("message")[0]
+                .classList.remove("show-modal");
+              sign.classList.remove("response");
               setTimeout(function () {
-                // self.$router.push("/login");
-                document
-                  .getElementsByClassName("message")[0]
-                  .classList.remove("show-modal");
-                sign.classList.remove("response");
-                setTimeout(function () {
-                  sign.innerHTML = "Log In";
-                }, 500);
-                sign.style.backgroundColor = "#1fbe1c";
-              }, 6000);
-            });
+                sign.innerHTML = "Log In";
+              }, 500);
+              sign.style.backgroundColor = "#1fbe1c";
+            }, 6000);
+          });
         }, 2000);
       }
     },

@@ -119,13 +119,11 @@ export default {
       this.newPlaylist.img = event.target.files[0];
     },
     getPlaylists() {
-      axios
-        .get(
-          `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`
-        )
-        .then((result) => {
-          this.myPlaylists = result.data;
-        });
+      // const urlTest = `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
+      const urlProd = `https://spottifakeapi.tk/index.php/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
+      axios.get(urlProd).then((result) => {
+        this.myPlaylists = result.data;
+      });
     },
 
     createPlaylist() {
@@ -134,9 +132,10 @@ export default {
       formData.append("file", this.newPlaylist.img);
       formData.append("name", this.newPlaylist.name);
       formData.append("description", this.newPlaylist.description);
-
+      // const urlTest = `http://localhost:8000/playlists/createPlaylist`;
+      const urlProd = `https://spottifakeapi.tk/index.php/playlists/createPlaylist`;
       axios
-        .post("http://localhost:8000/playlists/createPlaylist", formData, {
+        .post(urlProd, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
