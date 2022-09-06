@@ -13,7 +13,10 @@
             :to="`/playlist?id=${playlist.id_playlists}`"
             class="description"
           >
-            <img :src="`./thumbnail_playlists/` + playlist.thumbnail_playlist" alt="" />
+            <img
+              :src="`./thumbnail_playlists/` + playlist.thumbnail_playlist"
+              alt=""
+            />
             <p>{{ playlist.nombre_playlist }}</p>
           </router-link>
           <button><i class="fas fa-play"></i></button>
@@ -45,13 +48,9 @@ export default {
     getPlaylists() {
       // const urlTest = `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
       const urlProd = `https://spottifakeapi.tk/index.php/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
-      axios
-        .get(
-          `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`
-        )
-        .then((result) => {
-          this.playlists = result.data;
-        });
+      axios.get(urlProd).then((result) => {
+        this.playlists = result.data;
+      });
     },
   },
   mounted() {
