@@ -7,6 +7,7 @@
       <div class="headd">
         <!-- <img class="bg" src="../assets/home2.png" alt="" /> -->
       </div>
+      <h2>Recently Played</h2>
       <div class="recent-playlists">
         <div class="playlist" v-for="(playlist, idx) in playlists" :key="idx">
           <router-link
