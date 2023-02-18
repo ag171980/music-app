@@ -13,10 +13,12 @@
             :to="`/playlist?id=${playlist.id_playlists}`"
             class="description"
           >
-            <img
+            <!-- <img
               :src="`https://spotifakestorage.s3.amazonaws.com/` + playlist.thumbnail_playlist"
               alt=""
             />
+             -->
+             <img class="bg" src="../assets/home2.png" alt="" />
             <p>{{ playlist.nombre_playlist }}</p>
           </router-link>
           <button><i class="fas fa-play"></i></button>
@@ -46,8 +48,9 @@ export default {
   },
   methods: {
     getPlaylists() {
-      // const urlTest = `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
-      const urlProd = `https://spottifakeapi.tk/index.php/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
+      const urlProd = `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
+
+      // const urlProd = `https://spottifakeapi.tk/index.php/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
       axios.get(urlProd).then((result) => {
         this.playlists = result.data;
       });
