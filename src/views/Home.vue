@@ -18,7 +18,7 @@
               alt=""
             />
              -->
-             <img class="bg" src="../assets/home2.png" alt="" />
+            <img src="../assets/playlist/portada3.jpg" alt="" />
             <p>{{ playlist.nombre_playlist }}</p>
           </router-link>
           <button><i class="fas fa-play"></i></button>
