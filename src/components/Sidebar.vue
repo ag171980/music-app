@@ -5,18 +5,23 @@
       <h2>SPOTI <span>FAKE</span></h2>
     </div> -->
     <nav class="menu">
-      <router-link to="/home" class="menu-item">
+      <router-link to="/home" class="menu-item animate__animated animate__fadeIn">
         <!-- <i class="fas fa-home"></i> -->
         <i class="bi bi-house-door"></i>
         <p>Home</p>
       </router-link>
-      <router-link to="/search" class="menu-item">
+      <router-link to="/search" class="menu-item animate__animated animate__fadeIn">
         <!-- <i class="fas fa-search"></i> -->
         <i class="bi bi-search"></i>
         <p>Search</p>
       </router-link>
+      <router-link to="/profile" class="menu-item animate__animated animate__fadeIn">
+        <!-- <i class="fas fa-search"></i> -->
+        <i class="bi bi-collection"></i>
+        <p>My Playlists</p>
+      </router-link>
       <div
-        class="menu-item"
+        class="menu-item animate__animated animate__fadeIn"
         id="create-playlist"
         @click="modalCreatePlaylist()"
         v-if="nameActualPage == 'Home'"
@@ -79,7 +84,7 @@
 
     <div class="playlists">
       <div
-        class="playlist-sidebar"
+        class="playlist-sidebar animate__animated animate__fadeIn"
         v-for="(playlist, idx) in myPlaylists"
         :key="idx"
       >
@@ -105,6 +110,7 @@ export default {
       nameActualPage: this.$parent.name,
       userActual: [],
       myPlaylists: [],
+      screenWidth:"",
       newPlaylist: {
         name: "",
         description: "",
@@ -119,8 +125,8 @@ export default {
       this.newPlaylist.img = event.target.files[0];
     },
     getPlaylists() {
-      // const urlTest = `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
-      const urlProd = `https://spottifakeapi.tk/index.php/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
+      const urlProd = `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
+      // const urlProd = `https://spottifakeapi.tk/index.php/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
       axios.get(urlProd).then((result) => {
         this.myPlaylists = result.data;
       });
@@ -132,8 +138,8 @@ export default {
       formData.append("file", this.newPlaylist.img);
       formData.append("name", this.newPlaylist.name);
       formData.append("description", this.newPlaylist.description);
-      // const urlTest = `http://localhost:8000/playlists/createPlaylist`;
-      const urlProd = `https://spottifakeapi.tk/index.php/playlists/createPlaylist`;
+      const urlProd = `http://localhost:8000/playlists/createPlaylist`;
+      // const urlProd = `https://spottifakeapi.tk/index.php/playlists/createPlaylist`;
       axios
         .post(urlProd, formData, {
           headers: {
@@ -162,6 +168,7 @@ export default {
     },
   },
   mounted() {
+    this.screenWidth = screen.width
     let iconsBs = document.createElement("link");
     iconsBs.setAttribute("rel", "stylesheet");
     iconsBs.setAttribute(

@@ -13,8 +13,11 @@
             font-size: 30px;
             color: white;
             span {
-                color: #C574FF;
+                color: #c574ff;
             }
+        }
+        & > i {
+            display: none;
         }
         .arrows {
             padding: 5px;
