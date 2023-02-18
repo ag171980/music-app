@@ -1,5 +1,8 @@
 <template>
   <div class="bottombar">
+    <div class="barra" id="bar_mobile">
+      <div id="fill_mobile"></div>
+    </div>
     <div class="music">
       <div v-if="songActually.img != 'empty'">
         <img :src="songActually.img" height="60" width="60" />
@@ -164,6 +167,7 @@ export default {
     },
     restartDataFromTimer() {
       let fill = document.getElementById("fill");
+      let fill_mobile = document.getElementById("fill_mobile");
       fill.style.animation = "none";
       fill.offsetHeight;
       fill.style.animation = null;
@@ -171,14 +175,21 @@ export default {
       sec = 0;
       min = 0;
       fill.style.animation = `bar-progress ${this.totalSeconds}s steps(${this.totalSeconds},end)`;
+
+      fill_mobile.style.animation = "none";
+      fill_mobile.offsetHeight;
+      fill_mobile.style.animation = null;
+      fill_mobile.style.animation = `bar-progress ${this.totalSeconds}s steps(${this.totalSeconds},end)`;
     },
     actionMusic(stateVideo) {
       if (stateVideo == "change") {
         if (this.stateBtn) {
           document.getElementById("fill").classList.add("paused");
+          document.getElementById("fill_mobile").classList.add("paused");
           clearInterval(myVar);
         } else {
           document.getElementById("fill").classList.remove("paused");
+          document.getElementById("fill_mobile").classList.remove("paused");
           myVar = setInterval(this.myTimer, 1000);
         }
       } else {

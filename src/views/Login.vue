@@ -88,8 +88,8 @@ export default {
           pass: this.pass,
         };
         let self = this;
-        // const urlTest = "http://127.0.0.1:8000/usuarios/login"
-        const urlProd = "https://spottifakeapi.tk/index.php/usuarios/login";
+        const urlProd = "http://127.0.0.1:8000/usuarios/login"
+        // const urlProd = "https://spottifakeapi.tk/index.php/usuarios/login";
         setTimeout(function () {
           axios.post(urlProd, JSON.stringify(data)).then((result) => {
             //Creacion del modal

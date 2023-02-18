@@ -1,7 +1,7 @@
 <template>
   <div class="headerUser">
     <div class="header-primary">
-      <h1 v-if="namePageActual == 'Home'">
+      <h1 v-if="namePageActual == 'Home'" class="animate__animated animate__fadeInDown">
         Welcome <span> {{ dataUser.nombre_usuario }}</span>
       </h1>
       <div class="arrows">
@@ -20,13 +20,14 @@
           <i class="fas fa-search" @click="searchMusic()"></i>
         </div>
       </div>
-      <div class="user-settings" @click="openModalSettings()">
+      <div class="user-settings animate__animated animate__fadeInDown" @click="openModalSettings()">
         <i class="fas fa-user"></i>
         <p>{{ dataUser.nombre_usuario }}</p>
-        <i class="ar fas fa-sort-down"></i>
+        <i class="ar fas fa-sort-down" ></i>
       </div>
+      <i class="fas fa-cog" @click="openModalSettings()"></i>
     </div>
-    <div :class="{ 'modal-settings': true, modalOn: stateSettings }">
+    <div :class="{ 'modal-settings': true, modalOn: stateSettings } ">
       <p>Log Out</p>
     </div>
   </div>

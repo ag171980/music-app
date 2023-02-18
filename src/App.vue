@@ -1,6 +1,7 @@
 <template>
   <div class="app">
     <router-view />
+    <!-- <div v-if="widthScreen > 768"> -->
     <bottombar
       v-if="
         this.$route.name != 'Login' &&
@@ -9,6 +10,7 @@
       "
       ref="bottombar"
     />
+    <!-- </div> -->
   </div>
 
   <!-- <Sidebar /> -->
@@ -21,12 +23,18 @@ export default {
   components: {
     bottombar,
   },
+  data() {
+    return {
+      widthScreen: 0,
+    };
+  },
   methods: {
     asd() {
       alert("asd");
     },
   },
   mounted() {
+    this.widthScreen = screen.width;
     let recaptchaScript = document.createElement("script");
     recaptchaScript.setAttribute(
       "src",

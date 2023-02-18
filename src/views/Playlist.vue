@@ -4,10 +4,12 @@
     <sidebar ref="sidebar"></sidebar>
     <div class="myplaylist">
       <headeruser :dataUser="userActual" />
+
       <div class="header-playlist">
         <div class="photo-playlist">
           <div v-if="userActual.id_usuario == data_playlist.id_user_creator">
-            <img :src="data_playlist.img" alt="" />
+            <!-- <img :src="data_playlist.img" alt="" /> -->
+            <img src="../assets/playlist/portada3.jpg" alt="" />
           </div>
           <div class="edit-image">
             <i class="fas fa-pen"></i>
@@ -35,7 +37,8 @@
           allowfullscreen
         ></iframe> -->
       </div>
-      <div class="playlist">
+
+      <div class="list-songs">
         <div class="options-playlist">
           <div class="options-left">
             <button class="play"><i class="fas fa-play"></i></button>
@@ -72,6 +75,7 @@
             <p id="artist">ARTIST</p>
             <p id="addedAt">ADDED AT</p>
             <p id="duration"><i class="far fa-clock"></i></p>
+            <p id="option"></p>
           </div>
           <div
             class="list-musics"
@@ -80,8 +84,38 @@
           >
             <div
               class="music"
-              @dblclick="showAlert(songs.nombre_cancion, songs.artista_cancion)"
+              @click="putVideo(songs, ids)"
+              v-if="widthScreen <= 768"
             >
+              <!-- @click="showAlert(songs.nombre_cancion, songs.artista_cancion)" -->
+              <div class="number">
+                <p>{{ ids + 1 }}</p>
+                <i class="fas fa-play"></i>
+              </div>
+              <div class="description-music">
+                <img
+                  :src="songs.thumbnail_cancion"
+                  height="40"
+                  width="40"
+                  alt=""
+                />
+                <h2 class="songName">{{ songs.nombre_cancion }}</h2>
+              </div>
+              <p class="artist">{{ songs.artista_cancion }}</p>
+              <p class="addedAt">9/12/18</p>
+              <div class="duration">
+                <p id="duration">
+                  {{ parseInt(songs.duracion_cancion / 60) }}:{{
+                    parseInt(songs.duracion_cancion % 60)
+                  }}
+                </p>
+              </div>
+              <!-- opciones -->
+              <p class="options">
+                <i class="fas fa-ellipsis-h"></i>
+              </p>
+            </div>
+            <div class="music" v-else>
               <div class="number">
                 <p>{{ ids + 1 }}</p>
                 <i @click="putVideo(songs, ids)" class="fas fa-play"></i>
@@ -104,6 +138,7 @@
                   }}
                 </p>
               </div>
+              <!-- opciones -->
               <p class="options">
                 <i class="fas fa-ellipsis-h"></i>
               </p>
@@ -127,6 +162,7 @@ export default {
   name: "Playlist",
   data() {
     return {
+      widthScreen: 0,
       id_playlist: this.$route.query.id,
       creatorPlaylist: {},
       data_playlist: [],
@@ -234,6 +270,7 @@ export default {
     },
   },
   mounted() {
+    this.widthScreen = screen.width;
     if (localStorage.getItem("dataUser")) {
       this.userActual = JSON.parse(localStorage.getItem("dataUser"));
     } else {
