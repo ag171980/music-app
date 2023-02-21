@@ -5,7 +5,7 @@
         justify-content: space-between;
         align-items: center;
         font-family: $font-sen;
-        width: 90%;
+        width: 97%;
         margin: 15px auto;
         position: relative;
         z-index: 3;
@@ -46,18 +46,25 @@
                     border: none;
                     outline: none;
                     box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
-                    width: 250px;
-                    margin: 0 10px;
+                    width: 350px;
                     font-family: $font-open-sans;
                 }
-                i {
+                button {
+                    height: 100%;
                     position: absolute;
-                    right: 10px;
+                    right: 0px;
                     top: 0px;
-                    padding: 13px;
-                    &:hover {
-                        border-radius: 20px;
-                        cursor: pointer;
+                    background: none;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    i {
+                        padding: 13px;
+                        color: gray;
+                        &:hover {
+                            border-radius: 20px;
+                            cursor: pointer;
+                        }
                     }
                 }
             }

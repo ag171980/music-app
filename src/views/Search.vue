@@ -4,26 +4,61 @@
     <sidebar ref="sidebar"></sidebar>
     <div class="page">
       <headeruser ref="headeruser" :dataUser="userActual"></headeruser>
+      <!-- Implementar registro de ultimas busquedas, que se guarde el historial de busquedas y se muesstren los ultimos 5 -->
       <div class="results-head">
         <h2>Songs</h2>
-        <p>Results of: {{ resultOf }}</p>
+        <p v-if="resultOf != ''">Results of: "{{ resultOf }}"</p>
+      </div>
+      <div class="alert">
+        <p id="msg-addSong">asdadasd</p>
       </div>
       <div class="results">
-        <div
-          class="results-search"
-          v-for="(results, idr) in resultsSearch"
-          :key="idr"
-        >
-          <img :src="results.snippet.thumbnails.medium.url" alt="" />
-          <p>{{ results.snippet.title }}</p>
-          <button :id="idr" class="btn-result" @click="openList(idr)">
-            Agregar
-          </button>
+        <div class="first">
+          <div
+            class="first-result"
+            v-for="(results, idr) in resultsSearch.filter(
+              (res, ind) => ind === 0
+            )"
+            :key="idr"
+          >
+            <img :src="results.snippet.thumbnails.medium.url" alt="" />
+              <div class="description-song">
+                <div class="description">
+                  <p class="title">{{ results.snippet.title }}</p>
+                  <p class="artist">
+                    {{ results.snippet.channelTitle }}
+                  </p>
+                </div>
+                <button :id="idr" class="btn-result" @click="openList(idr)">Add</button>
+              </div>
+          </div>
+        </div>
+        <div class="others-results">
+          <div
+            class="result"
+            v-for="(results, idr) in resultsSearch.filter(
+              (res, ind) => ind !== 0
+            )"
+            :key="idr"
+          >
+            <div class="img-title">
+              <img :src="results.snippet.thumbnails.medium.url" alt="" />
+              <div class="description">
+                <p class="title">{{ results.snippet.title }}</p>
+                <p class="artist">
+                  {{ results.snippet.channelTitle }}
+                </p>
+              </div>
+            </div>
+            <button :id="idr" class="btn-result" @click="openList(idr)">
+              Add
+            </button>
+          </div>
         </div>
       </div>
       <div class="modal">
         <div class="modal-playlists">
-          <h2>Agregar a playlist:</h2>
+          <h2>Add to playlist:</h2>
           <div
             class="playlists"
             v-for="(playlist, idp) in playlists"
@@ -43,7 +78,7 @@
               <p>{{ playlist.nombre_playlist }}</p>
             </div>
           </div>
-          <p class="alert">{{ alertPlaylistNotSelected }}</p>
+          <!-- <p class="alert">{{ alertPlaylistNotSelected }}</p> -->
           <div class="bottom-modal-playlists">
             <button @click="openList()">Cancel</button>
             <button class="confirm" @click="addToPlaylistSelected()">
@@ -53,13 +88,12 @@
         </div>
       </div>
     </div>
-    <bottombar></bottombar>
+    <!-- <bottombar></bottombar> -->
   </div>
 </template>
 <script>
 import headeruser from "../components/HeaderUser.vue";
 import sidebar from "../components/Sidebar.vue";
-import bottombar from "../components/Bottombar.vue";
 
 import axios from "axios";
 export default {
@@ -90,7 +124,6 @@ export default {
   },
   components: {
     sidebar,
-    bottombar,
     headeruser,
   },
   methods: {
@@ -128,7 +161,6 @@ export default {
         seconds: 0,
       };
 
-
       duration.split("").map((item, index, array) => {
         if (array[index] == "H") {
           if (!isNaN(Number(array[index - 2]))) {
@@ -162,7 +194,7 @@ export default {
     },
     async getDurationOfSong(id) {
       const request = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?id=${id}&part=contentDetails&key=${this.$refs.headeruser.key}`
+        `https://www.googleapis.com/youtube/v3/videos?id=${id}&part=contentDetails&maxResults=25&key=${this.$refs.headeruser.key}`
       );
       this.songAddToPlaylist.song.duration = this.convertYTTimeToSeconds(
         request.data.items[0].contentDetails.duration
@@ -176,28 +208,33 @@ export default {
         )
         .then((res) => {
           console.log(res.data);
+          document.querySelector("#msg-addSong").innerHTML = res.data.msg;
+          document.querySelector(".alert").classList.add("show");
+
+          setTimeout(() => {
+            document.querySelector(".alert").classList.remove("show");
+          }, 1500);
+          document.querySelector(".modal").classList.remove("show");
         });
     },
-
 
     openList(idSongSelected = null) {
       if (this.modalPlaylists) {
         document.getElementsByClassName("modal")[0].classList.remove("show");
         this.modalPlaylists = false;
       } else {
-
         this.songsSelected = this.resultsSearch[idSongSelected];
         this.songAddToPlaylist.song = {
           id: this.resultsSearch[idSongSelected].id.videoId,
           artist: this.resultsSearch[idSongSelected].snippet.channelTitle,
           name: this.resultsSearch[idSongSelected].snippet.title,
-          
+
           miniature:
             this.resultsSearch[idSongSelected].snippet.thumbnails.high.url,
         };
 
         this.getDurationOfSong(this.songAddToPlaylist.song.id);
-        
+
         document.getElementsByClassName("modal")[0].classList.add("show");
         this.modalPlaylists = true;
       }
@@ -214,6 +251,7 @@ export default {
     },
   },
   mounted() {
+    document.title = this.name;
     if (localStorage.getItem("dataUser")) {
       this.userActual = JSON.parse(localStorage.getItem("dataUser"));
     } else {
@@ -221,7 +259,7 @@ export default {
     }
 
     this.getPlaylists();
-console.log(this.userActual.id_usuario)
+    console.log(this.userActual.id_usuario);
     let recaptchaScript = document.createElement("script");
     recaptchaScript.setAttribute(
       "src",

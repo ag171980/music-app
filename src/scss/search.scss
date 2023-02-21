@@ -13,52 +13,168 @@
     justify-content: center;
     align-items: flex-start;
     .space {
-        width: 13%;
+        width: 15%;
     }
     @include sidebar;
     .page {
-        height: 100vh;
-        width: 87%;
+        min-height: 100vh;
+        width: 85%;
         background: #121212;
         @include user-head;
-        h2 {
-            color: white;
-            text-align: start;
-            margin: 0 25px;
+
+        .results-head {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            h2,
+            p {
+                color: white;
+            }
+            h2 {
+                text-align: start;
+            }
+        }
+        .alert {
+            width: 95vw;
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -10;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.9);
+            transition: 0.5s all;
+            p {
+                text-align: start;
+                color: #a82dff;
+            }
+            &.show {
+                z-index: 9999;
+            }
         }
         .results {
             display: flex;
             flex-direction: row;
             justify-content: space-around;
-            align-items: center;
-            padding: 10px;
-            .results-search {
-                background: rgba(57, 57, 57, 0.5);
-                margin: 10px;
-                height: 250px;
-                width: 250px;
-                border-radius: 10px;
+            align-items: flex-start;
+            padding: 10px 20px;
+            .first {
+                width: 30%;
+                .first-result {
+                    background: rgba(57, 57, 57, 0.5);
+                    height: 250px;
+                    width: 100%;
+                    border-radius: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    align-items: flex-start;
+                    padding: 10px 20px;
+                    img {
+                        width: 50%;
+                        height: 120px;
+                        object-fit: cover;
+                    }
+                    .description-song {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        .description {
+                            width: 100%;
+                            p {
+                                color: white;
+                                font-family: $font-open-sans;
+                            }
+                            .title {
+                                width: auto;
+                                text-align: start;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                overflow: hidden;
+                            }
+                            .artist {
+                                text-align: start;
+                                font-size: 14px;
+                                color: rgba(255, 255, 255, 0.6);
+                            }
+                        }
+                        button {
+                            background-color: #a82dff;
+                            color: white;
+                            padding: 10px;
+                            border-radius: 5px;
+                            border: none;
+                            align-self: flex-end;
+                            &:hover {
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.1);
+                        cursor: pointer;
+                    }
+                }
+            }
+            .others-results {
                 display: flex;
                 flex-direction: column;
-                justify-content: space-around;
-                align-items: center;
-                img {
-                    width: 80%;
-                    height: 150px;
-                }
-                p {
-                    color: white;
-                    font-family: $font-open-sans;
-                }
-                &:hover {
-                    background-color: rgba(255, 255, 255, 0.2);
-                    cursor: pointer;
+                width: 65%;
+                .result {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                    margin: 5px 0;
+                    padding: 5px;
+                    border-radius: 5px;
+                    transition: 0.3s all;
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.1);
+                    }
+                    .img-title {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        img {
+                            height: 45px;
+                            width: 45px;
+                            object-fit: cover;
+                        }
+                        .description {
+                            p {
+                                font-size: 14px;
+                                padding: 0 20px;
+                                color: white;
+                            }
+                            .artist {
+                                text-align: start;
+                                padding: 5px 20px;
+                                font-size: 14px;
+                                color: rgba(255, 255, 255, 0.6);
+                            }
+                        }
+                    }
+                    button {
+                        background-color: #a82dff;
+                        color: white;
+                        padding: 10px;
+                        border-radius: 5px;
+                        border: none;
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
                 }
             }
         }
         .modal {
             background-color: rgba(0, 0, 0, 0.9);
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             z-index: -10000;
@@ -77,6 +193,9 @@
                 left: 50%;
                 transform: translateX(-50%);
                 transition: 0.3s all;
+                h2 {
+                    color: white;
+                }
                 .playlists {
                     .playlist {
                         display: flex;
@@ -104,7 +223,7 @@
                         }
                     }
                 }
-                p{
+                p {
                     color: red;
                 }
                 .bottom-modal-playlists {
@@ -117,6 +236,11 @@
                         font-size: 15px;
                         text-align: center;
                         font-weight: bolder;
+                        transition: 0.5s all;
+                        &:hover {
+                            cursor: pointer;
+                            transform: scale(1.1);
+                        }
                     }
                     .confirm {
                         color: white;
@@ -136,4 +260,129 @@
         }
     }
     @include bottombar;
+}
+
+@media (max-width: 1440px) {
+}
+@media (max-width: 1250px) {
+}
+@media (max-width: 1024px) {
+}
+@media (max-width: 768px) {
+    .app {
+        .search {
+            .space {
+                width: 0%;
+            }
+            .page {
+                height: 100vh;
+                width: 100%;
+
+                .headd {
+                    left: 0;
+                    width: 100%;
+                }
+                .header-primary {
+                    h1 {
+                        font-size: 25px;
+                    }
+                    & > i {
+                        display: flex;
+                        color: white;
+                        font-size: 25px;
+                        transition: 0.3s all;
+                        &:hover {
+                            font-size: 21px;
+                        }
+                    }
+
+                    .arrows {
+                        width: 100%;
+                        .searchbar {
+                            width: 60%;
+                            input {
+                                margin: 0;
+                                width: 100%;
+                            }
+                        }
+                    }
+                    .user-settings {
+                        display: none;
+                    }
+                }
+                .modal-settings {
+                    top: 70px;
+                    right: 15px;
+                }
+            }
+            @include sidebar-768px;
+        }
+        @include bottombar-768px;
+    }
+}
+@media (max-width: 700px) {
+    .app .search .page .results {
+        flex-direction: column;
+        .first {
+            width: 60%;
+            .first-result {
+                height: 175px;
+                img {
+                    height: 80px;
+                    width: 80px;
+                }
+                .description-song {
+                    flex-direction: row;
+                    justify-content: space-between;
+                    .description {
+                        width: 70%;
+                    }
+                    button {
+                        width: auto;
+                    }
+                }
+            }
+        }
+        .others-results {
+            width: 100%;
+            margin: 3vh 0;
+        }
+    }
+}
+@media (max-width: 575px) {
+    .app .search .page .modal .modal-playlists{
+        width: 90%;
+    }
+
+}
+@media (max-width: 485px) {
+    .app .search .page .results {
+        .others-results .img-title {
+            .description {
+                .title {
+                    width: 250px;
+                    text-align: start;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+}
+@media (max-width: 425px) {
+}
+@media (max-width: 375px) {
+    .app .search .page .results {
+        .first {
+            width: 100%;
+        }
+        .others-results .img-title {
+            .description {
+                .title {
+                    width: 200px;
+                }
+            }
+        }
+    }
 }

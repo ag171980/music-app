@@ -1,33 +1,45 @@
 <template>
   <div class="headerUser">
     <div class="header-primary">
-      <h1 v-if="namePageActual == 'Home'" class="animate__animated animate__fadeInDown">
+      <h1
+        v-if="namePageActual == 'Home'"
+        class="animate__animated animate__fadeInDown"
+      >
         Welcome <span> {{ dataUser.nombre_usuario }}</span>
       </h1>
       <div class="arrows">
-        <button v-if="namePageActual != 'Home'" href="">
+        <!-- <button v-if="namePageActual != 'Home'" href="">
           <i class="fas fa-chevron-left"></i>
         </button>
         <button v-if="namePageActual != 'Home'" href="">
           <i class="fas fa-chevron-right"></i>
-        </button>
-        <div class="searchbar" v-if="namePageActual == 'Search'">
+        </button> -->
+        <form
+          @submit="searchMusic"
+          class="searchbar"
+          v-if="namePageActual == 'Search'"
+        >
           <input
             type="text"
             v-model="searchInYT"
             placeholder="Search a music..."
           />
-          <i class="fas fa-search" @click="searchMusic()"></i>
-        </div>
+          <button type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
       </div>
-      <div class="user-settings animate__animated animate__fadeInDown" @click="openModalSettings()">
+      <div
+        class="user-settings animate__animated animate__fadeInDown"
+        @click="openModalSettings()"
+      >
         <i class="fas fa-user"></i>
         <p>{{ dataUser.nombre_usuario }}</p>
-        <i class="ar fas fa-sort-down" ></i>
+        <i class="ar fas fa-sort-down"></i>
       </div>
       <i class="fas fa-cog" @click="openModalSettings()"></i>
     </div>
-    <div :class="{ 'modal-settings': true, modalOn: stateSettings } ">
+    <div :class="{ 'modal-settings': true, modalOn: stateSettings }">
       <p>Log Out</p>
     </div>
   </div>
@@ -55,7 +67,8 @@ export default {
         ? (this.stateSettings = false)
         : (this.stateSettings = true);
     },
-    searchMusic() {
+    searchMusic(e) {
+      e.preventDefault();
       this.$parent.resultOf = this.searchInYT;
       // console.log(this.$parent.resultOf)
       axios
