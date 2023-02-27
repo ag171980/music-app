@@ -15,17 +15,7 @@
         <p>{{ songActually.artist }}</p>
       </div>
     </div>
-    <iframe
-      id="videoYT"
-      width="120"
-      height="85"
-      src=""
-      title="YouTube video player"
-      frameborder="0"
-      autoplay
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-    ></iframe>
+    <div class="contentVideoYT"></div>
     <!-- https://www.youtube.com/embed/r63YPAW2G9M -->
 
     <div class="controls">
@@ -90,7 +80,7 @@ export default {
   methods: {
     changeStateVideo() {
       let videoYT = document.getElementById("videoYT");
-      if (this.stateBtn) {
+      if (this.stateBtn === true) {
         videoYT.contentWindow.postMessage(
           '{"event":"command","func":"pauseVideo","args":""}',
           "*"
@@ -98,6 +88,7 @@ export default {
         this.actionMusic("change");
         this.changeBtnPlay(this.stateBtn);
       } else {
+        console.log("entras aca")
         videoYT.contentWindow.postMessage(
           '{"event":"command","func":"playVideo","args":""}',
           "*"

@@ -156,17 +156,52 @@
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
-                    button {
-                        color: white;
-                        background: none;
-                        border: none;
-                        padding: 10px;
-                        &:hover {
-                            background-color: rgba(236, 236, 236, 0.3);
-                            border-radius: 20px;
+                    .searchBar {
+                        position: relative;
+                        transition: 0.5s all;
+
+                        button {
+                            position: relative;
+                            right: 5px;
+                            z-index: 3;
+                            color: white;
+                            background: none;
+                            border: none;
+                            padding: 10px;
+                            &:hover {
+                                background-color: rgba(236, 236, 236, 0.3);
+                                border-radius: 20px;
+                            }
+                        }
+
+                        .input-search {
+                            position: absolute;
+                            z-index: -1;
+                            right: 3px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            transition: 0.5s all;
+                            input {
+                                background-color: rgba(236, 236, 236, 0.2);
+                                border: none;
+                                padding: 10px;
+                                padding-right: 34px;
+                                border-radius: 5px;
+                                width: 20px;
+                                transition: 0.5s all;
+                                color: white;
+                            }
+                        }
+                        .show {
+                            z-index: 1;
+                            input {
+                                width: 180px;
+                            }
                         }
                     }
+
                     .filters {
+                        position: relative;
                         .filter {
                             display: flex;
                             flex-direction: row;
@@ -214,9 +249,9 @@
                         .show {
                             display: flex;
                             flex-direction: column;
-                            position: fixed;
+                            position: absolute;
                             z-index: 2;
-                            right: 30px;
+                            right: 0px;
                         }
                     }
                 }
@@ -314,15 +349,27 @@
                         flex-direction: row;
                         align-items: center;
                         width: 45%;
-                        h2 {
-                            font-weight: lighter;
-                            font-size: 18px;
+                        .song-artist {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-start;
                             padding: 5px 15px;
-                            text-align: start;
-                            width: 75%;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
+                            width: 100%;
+                            h2 {
+                                font-weight: lighter;
+                                font-size: 18px;
+                                text-align: start;
+                                width: 75%;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                color: white;
+                            }
+                            p {
+                                color: rgba(255, 255, 255, 0.4);
+                                width: 75%;
+                                text-align: start;
+                            }
                         }
                     }
                     .artist {
@@ -416,7 +463,7 @@
         @include sidebar-768px;
         .myplaylist {
             width: 90%;
-            margin-bottom: 150px;
+            margin-bottom: 200px;
             .header-playlist {
                 height: auto;
             }
@@ -429,13 +476,21 @@
         .myplaylist {
             .header-playlist {
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
                 padding: 0;
-                .photo-playlist img {
-                    height: 250px;
-                    width: 250px;
+                .photo-playlist {
+                    align-self: center;
+
+                    img {
+                        height: 250px;
+                        width: 250px;
+                    }
                 }
                 .description-playlist {
+                    padding: 7px 0;
+                    h1 {
+                        text-align: start;
+                    }
                     p:first-child {
                         display: none;
                     }
@@ -460,12 +515,15 @@
                     .duration {
                         display: none;
                     }
-                    .description-music{
-                        background-color: red;
+                    .description-music {
                         height: 70px;
                         width: 100%;
-                        h2{
+                        .song-artist {
                             width: 90%;
+                            h2,
+                            p {
+                                width: 100%;
+                            }
                         }
                     }
                 }
