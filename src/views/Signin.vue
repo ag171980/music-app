@@ -18,25 +18,13 @@
             >
           </div>
           <div class="input-group">
-            <input
-              type="email"
-              v-model="email"
-              id="email"
-              name="email"
-              class="input"
-            />
+            <input type="email" v-model="email" id="email" name="email" class="input" />
             <label for="email" v-bind:class="{ fijar: email }"
               ><i class="fas fa-envelope"></i> Email</label
             >
           </div>
           <div class="input-group">
-            <input
-              type="password"
-              v-model="pass"
-              id="pass"
-              name="pass"
-              class="input"
-            />
+            <input type="password" v-model="pass" id="pass" name="pass" class="input" />
             <label for="pass" v-bind:class="{ fijar: pass }"
               ><i class="fas fa-key"></i> Password</label
             >
@@ -55,15 +43,36 @@
       </div>
     </div>
     <div class="message">
-      <div id="modal" class="modal"></div>
+      <div id="modal" class="modal">
+        <template v-if="showResponse === true">
+          <lottie-player
+            src="https://assets2.lottiefiles.com/private_files/lf30_s8zcfby1.json"
+            background="transparent"
+            speed="1"
+            style="width: 150px; height: 150px"
+            autoplay
+          ></lottie-player>
+          <p>Cuenta registrada correctamente.</p>
+        </template>
+        <template v-else>
+          <lottie-player
+            src="https://assets2.lottiefiles.com/private_files/lf30_ltbsyn9h.json"
+            background="transparent"
+            speed="1"
+            style="width: 150px; height: 150px"
+            autoplay
+          ></lottie-player>
+          <p>Error:</p>
+        </template>
+      </div>
     </div>
     <Footer />
   </div>
 </template>
 <script>
-import axios from "axios";
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
+import { signin } from "../api/apiUser";
 export default {
   components: {
     Navbar,
@@ -75,6 +84,7 @@ export default {
       email: "",
       pass: "",
       errors: [],
+      showResponse: undefined,
     };
   },
   mounted() {},
@@ -92,6 +102,7 @@ export default {
       }
       if (this.fullname && this.email && this.pass) {
         let sign = document.getElementById("sign");
+        let message = document.getElementsByClassName("message")[0];
         sign.innerHTML = '<i id="spinner" class="fas fa-spinner"></i>';
         const data = {
           id: Math.floor(Math.random() * 1000),
@@ -99,56 +110,27 @@ export default {
           email: this.email,
           pass: this.pass,
         };
-        // let self = this;
-        const urlProd = "http://127.0.0.1:8000/usuarios/createAccount"
+        let self = this;
+        const urlProd = "http://127.0.0.1:8000/usuarios/createAccount";
         // const urlProd = "https://spottifakeapi.tk/index.php/usuarios/createAccount";
-        
-        setTimeout(function () {
-          axios
-            .post(urlProd, JSON.stringify(data))
-            .then((result) => {
-              //Creacion del modal
-              let recaptchaScript = document.createElement("script");
-              recaptchaScript.setAttribute(
-                "src",
-                "https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"
-              );
-              document.head.appendChild(recaptchaScript);
 
-              document
-                .getElementsByClassName("message")[0]
-                .classList.add("show-modal");
-              if (result.data.msg == "Cuenta registrada correctamente.") {
-                document.getElementById(
-                  "modal"
-                ).innerHTML = `<lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_s8zcfby1.json" background="transparent" speed="1" style="width: 150px; height: 150px;" autoplay></lottie-player>
-              <p>${result.data.msg}</p>`;
-
-                sign.innerHTML = '<i class="fas fa-check"></i>';
-                sign.classList.add("response");
-              } else {
-                document.getElementById(
-                  "modal"
-                ).innerHTML = `<lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_ltbsyn9h.json" background="transparent" speed="1" style="width: 150px; height: 150px;" autoplay></lottie-player>
-              <p>${result.data.msg}</p>`;
-                sign.innerHTML = '<i class="fas fa-times"></i>';
-                sign.classList.add("response");
-                sign.style.backgroundColor = "red";
-              }
-              setTimeout(function () {
-                document
-                  .getElementsByClassName("message")[0]
-                  .classList.remove("show-modal");
-                sign.classList.remove("response");
-                setTimeout(function () {
-                  sign.innerHTML = "Sign Up";
-                }, 500);
-                sign.style.backgroundColor = "#1fbe1c";
-              }, 6000);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+        setTimeout(async function () {
+          if (await signin(urlProd, JSON.stringify(data), sign, message)) {
+            self.showResponse = true;
+            setTimeout(function () {
+              self.$router.push("/login");
+            }, 2000);
+          } else {
+            self.showResponse = false;
+          }
+          setTimeout(function () {
+            message.classList.remove("show-modal");
+            sign.classList.remove("response");
+            setTimeout(function () {
+              sign.innerHTML = "Sign Up";
+            }, 500);
+            sign.style.backgroundColor = "#1fbe1c";
+          }, 6000);
         }, 2000);
       }
     },

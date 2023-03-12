@@ -37,25 +37,43 @@
               <li v-for="(error, ide) in errors" :key="ide">{{ error }}</li>
             </ul>
           </div>
-          <button class="btn-sign" id="log" type="button" @click="login()">
-            Log In
-          </button>
-          <router-link to="/signin"
-            >you don't have an account? enter here</router-link
-          >
+          <button class="btn-sign" id="log" type="button" @click="login()">Log In</button>
+          <router-link to="/signin">you don't have an account? enter here</router-link>
         </form>
       </div>
     </div>
     <div class="message">
-      <div id="modal" class="modal"></div>
+      <div id="modal" class="modal">
+        <template v-if="showResponse === true">
+          <lottie-player
+            src="https://assets2.lottiefiles.com/private_files/lf30_s8zcfby1.json"
+            background="transparent"
+            speed="1"
+            style="width: 150px; height: 150px"
+            autoplay
+          ></lottie-player>
+          <p>Inicio de sesión exitoso</p>
+        </template>
+        <template v-else>
+          <lottie-player
+            src="https://assets2.lottiefiles.com/private_files/lf30_ltbsyn9h.json"
+            background="transparent"
+            speed="1"
+            style="width: 150px; height: 150px"
+            autoplay
+          ></lottie-player>
+          <p>Error, email o contraseña incorrecta</p>
+        </template>
+      </div>
     </div>
     <Footer />
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
+import { login } from "../api/apiUser";
 export default {
   components: {
     Navbar,
@@ -66,13 +84,14 @@ export default {
       email: "",
       pass: "",
       errors: [],
+      showResponse: undefined,
     };
   },
   // mounted() {
 
   // },
   methods: {
-    login() {
+    async login() {
       this.errors = [];
       if (!this.email) {
         this.errors.push("Email required.");
@@ -82,66 +101,32 @@ export default {
       }
       if (this.email && this.pass) {
         let sign = document.getElementById("log");
+        let message = document.getElementsByClassName("message")[0];
         sign.innerHTML = '<i id="spinner" class="fas fa-spinner"></i>';
         const data = {
           email: this.email,
           pass: this.pass,
         };
         let self = this;
-        const urlProd = "http://127.0.0.1:8000/usuarios/login"
+        const urlProd = "http://127.0.0.1:8000/usuarios/login";
         // const urlProd = "https://spottifakeapi.tk/index.php/usuarios/login";
-        setTimeout(function () {
-          axios.post(urlProd, JSON.stringify(data)).then((result) => {
-            //Creacion del modal
-            let recaptchaScript = document.createElement("script");
-            recaptchaScript.setAttribute(
-              "src",
-              "https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"
-            );
-            document.head.appendChild(recaptchaScript);
-
-            document
-              .getElementsByClassName("message")[0]
-              .classList.add("show-modal");
-            // console.log(result.data);
-            if (result.data.msg == "Inicio de sesión exitosa.") {
-              document.getElementById(
-                "modal"
-              ).innerHTML = `<lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_s8zcfby1.json" background="transparent" speed="1" style="width: 150px; height: 150px;" autoplay></lottie-player>
-              <p>Inicio de sesión exitoso</p>`;
-              sign.innerHTML = '<i class="fas fa-check"></i>';
-              sign.classList.add("response");
-              setTimeout(function () {
-                localStorage.setItem(
-                  "dataUser",
-                  JSON.stringify(result.data.usuario)
-                );
-
-                self.$router.push("/home");
-              }, 2000);
-            } else {
-              document.getElementById(
-                "modal"
-              ).innerHTML = `<lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_ltbsyn9h.json" background="transparent" speed="1" style="width: 150px; height: 150px;" autoplay></lottie-player>
-              <p>Error, email o contraseña incorrecta</p>
-              <a href="/login">Back</a>`;
-              sign.innerHTML = '<i class="fas fa-times"></i>';
-              sign.classList.add("response");
-              sign.style.backgroundColor = "red";
-            }
-
+        setTimeout(async function () {
+          if (await login(urlProd, JSON.stringify(data), sign, message)) {
+            self.showResponse = true;
             setTimeout(function () {
-              // self.$router.push("/login");
-              document
-                .getElementsByClassName("message")[0]
-                .classList.remove("show-modal");
-              sign.classList.remove("response");
-              setTimeout(function () {
-                sign.innerHTML = "Log In";
-              }, 500);
-              sign.style.backgroundColor = "#1fbe1c";
-            }, 6000);
-          });
+              self.$router.push("/home");
+            }, 2000);
+          } else {
+            self.showResponse = false;
+          }
+          setTimeout(function () {
+            message.classList.remove("show-modal");
+            sign.classList.remove("response");
+            setTimeout(function () {
+              sign.innerHTML = "Log In";
+            }, 500);
+            sign.style.backgroundColor = "#1fbe1c";
+          }, 6000);
         }, 2000);
       }
     },

@@ -50,8 +50,8 @@
                 </p>
               </div>
             </div>
-            <button :id="idr" class="btn-result" @click="openList(idr)">
-              Add
+            <button :id="idr" class="btn-result" @click="openList(idr+1)">
+              Add 
             </button>
           </div>
         </div>

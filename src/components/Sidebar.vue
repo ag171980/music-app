@@ -4,19 +4,38 @@
       <img src="../assets/logo.png" alt="logo app music spotifake" />
       <h2>SPOTI <span>FAKE</span></h2>
     </div> -->
+    <div class="message-create-playlist">
+      <template v-if="showMessage === true">
+        <lottie-player
+          src="https://assets2.lottiefiles.com/private_files/lf30_s8zcfby1.json"
+          background="transparent"
+          speed="1"
+          style="width: 30px; height: 30px"
+          autoplay
+        ></lottie-player>
+        <p>Playlist created successfully</p>
+      </template>
+      <template v-else-if="showMessage === false">
+        <lottie-player
+          src="https://assets2.lottiefiles.com/private_files/lf30_ltbsyn9h.json"
+          background="transparent"
+          speed="1"
+          style="width: 30px; height: 30px"
+          autoplay
+        ></lottie-player>
+        <p>There was an error creating your playlist</p>
+      </template>
+    </div>
     <nav class="menu">
       <router-link to="/home" class="menu-item animate__animated animate__fadeIn">
-        <!-- <i class="fas fa-home"></i> -->
         <i class="bi bi-house-door"></i>
         <p>Home</p>
       </router-link>
       <router-link to="/search" class="menu-item animate__animated animate__fadeIn">
-        <!-- <i class="fas fa-search"></i> -->
         <i class="bi bi-search"></i>
         <p>Search</p>
       </router-link>
       <router-link to="/profile" class="menu-item animate__animated animate__fadeIn">
-        <!-- <i class="fas fa-search"></i> -->
         <i class="bi bi-collection"></i>
         <p>My Playlists</p>
       </router-link>
@@ -26,7 +45,6 @@
         @click="modalCreatePlaylist()"
         v-if="nameActualPage == 'Home'"
       >
-        <!-- <i class="fas fa-plus"></i> -->
         <i class="bi bi-plus"></i>
         <p>Create Playlist</p>
       </div>
@@ -69,14 +87,12 @@
               ></textarea>
               <label for="descriptionplaylist">Description</label>
             </div>
-            <button type="button" @click="createPlaylist()">
-              Save Playlist
-            </button>
+            <button type="button" @click="createPlaylist()">Save Playlist</button>
           </div>
         </form>
         <p>
-          Al continuar, aceptas darle acceso a Spotifake a la imagen que decidas
-          subir. Asegurate de tener los derechos para subir la imagen.
+          Al continuar, aceptas darle acceso a Spotifake a la imagen que decidas subir.
+          Asegurate de tener los derechos para subir la imagen.
         </p>
       </div>
     </div>
@@ -101,7 +117,7 @@
   <!-- <router-view/> -->
 </template>
 <script>
-import axios from "axios";
+import { getPlaylists, createPlaylist } from "../api/apiPlaylist";
 export default {
   name: "Sidebar",
   props: ["dataUser"],
@@ -110,7 +126,7 @@ export default {
       nameActualPage: this.$parent.name,
       userActual: [],
       myPlaylists: [],
-      screenWidth:"",
+      screenWidth: "",
       newPlaylist: {
         name: "",
         description: "",
@@ -118,72 +134,49 @@ export default {
       },
       imgimg: "",
       stateModal: true,
+      showMessage: undefined,
     };
   },
   methods: {
     dataFiles(event) {
       this.newPlaylist.img = event.target.files[0];
     },
-    getPlaylists() {
-      const urlProd = `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
-      // const urlProd = `https://spottifakeapi.tk/index.php/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
-      axios.get(urlProd).then((result) => {
-        this.myPlaylists = result.data;
-      });
-    },
 
-    createPlaylist() {
+    async createPlaylist() {
+      let msg = document.querySelector(".message-create-playlist");
       let formData = new FormData();
       formData.append("idUser", this.dataUser.id_usuario);
       formData.append("file", this.newPlaylist.img);
       formData.append("name", this.newPlaylist.name);
       formData.append("description", this.newPlaylist.description);
-      const urlProd = `http://localhost:8000/playlists/createPlaylist`;
-      // const urlProd = `https://spottifakeapi.tk/index.php/playlists/createPlaylist`;
-      axios
-        .post(urlProd, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          console.log(result.data);
-          this.$parent.getPlaylists();
-          this.getPlaylists();
-          this.modalCreatePlaylist();
-        });
+      msg.classList.add("show");
+      this.showMessage = await createPlaylist(formData);
+      this.modalCreatePlaylist();
+      this.myPlaylists = await getPlaylists(this.userActual.id_usuario);
+      setTimeout(() => {
+        msg.classList.remove("show");
+      }, 3000);
     },
     modalCreatePlaylist() {
       if (this.stateModal) {
-        document
-          .getElementsByClassName("modal-create-playlist")[0]
-          .classList.add("show");
-        this.stateModal = false;
+        document.getElementsByClassName("modal-create-playlist")[0].classList.add("show");
       } else {
         document
           .getElementsByClassName("modal-create-playlist")[0]
           .classList.remove("show");
-        this.stateModal = true;
       }
+      this.stateModal = !this.stateModal;
     },
   },
-  mounted() {
-    this.screenWidth = screen.width
-    let iconsBs = document.createElement("link");
-    iconsBs.setAttribute("rel", "stylesheet");
-    iconsBs.setAttribute(
-      "href",
-      "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
-    );
-
-    document.head.appendChild(iconsBs);
+  async mounted() {
+    this.screenWidth = screen.width;
 
     if (localStorage.getItem("dataUser")) {
       this.userActual = JSON.parse(localStorage.getItem("dataUser"));
+      this.myPlaylists = await getPlaylists(this.userActual.id_usuario);
     } else {
       this.$router.push("/login");
     }
-    this.getPlaylists();
   },
 };
 </script>

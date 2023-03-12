@@ -1,7 +1,6 @@
 <template>
   <div class="app">
     <router-view />
-    <!-- <div v-if="widthScreen > 768"> -->
     <bottombar
       v-if="
         this.$route.name != 'Login' &&
@@ -12,8 +11,6 @@
     />
     <!-- </div> -->
   </div>
-
-  <!-- <Sidebar /> -->
 </template>
 <script>
 import bottombar from "./components/Bottombar.vue";

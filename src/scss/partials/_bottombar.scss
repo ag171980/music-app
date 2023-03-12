@@ -15,7 +15,7 @@
         #videoYT {
             display: none;
         }
-        .barra{
+        .barra {
             display: none;
         }
         .music {
@@ -69,18 +69,27 @@
             top: 35%;
             transform: translateY(-50%);
             .controls-top {
+                display: flex;
+
                 button {
                     height: 40px;
                     width: 40px;
                     padding: 10px;
                     border-radius: 25px;
+                    margin: 0 7px;
                     border: none;
                     display: flex;
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
                     transition: 0.3s all;
-                    background-color: rgba($color: #fff, $alpha: 0.7);
+                    background: none;
+                    color: white;
+                    font-size: 16px;
+                    &:nth-child(3) {
+                        color: black;
+                        background-color: rgba($color: #fff, $alpha: 0.7);
+                    }
                     // i {
                     //     margin-top: 3px;
                     //     margin-left: 3px;

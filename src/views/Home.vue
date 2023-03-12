@@ -18,12 +18,12 @@
               class="description"
             >
               <!-- Local -->
-              <!-- <img
-              :src="`thumbnail_playlists/` + playlist.thumbnail_playlist"
-              alt=""
-            /> -->
+              <img
+                :src="require(`../assets/thumbnail_playlists/${playlist.thumbnail_playlist}`)"
+                alt=""
+              />
 
-              <img src="../assets/playlist/portada3.jpg" alt="" />
+              <!-- <img src="../assets/playlist/portada3.jpg" alt="" /> -->
 
               <!-- Production -->
               <!-- <img
@@ -41,14 +41,13 @@
   </div>
 </template>
 <script>
-import axios from "axios";
 import sidebar from "../components/Sidebar.vue";
 // import bottombar from "../components/Bottombar.vue";
 import headerUser from "../components/HeaderUser.vue";
+import { getPlaylists } from "../api/apiPlaylist";
 export default {
   components: {
     sidebar,
-
     headerUser,
   },
   data() {
@@ -58,29 +57,15 @@ export default {
       playlists: [],
     };
   },
-  methods: {
-    getPlaylists() {
-      const urlProd = `http://localhost:8000/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
-      // const urlProd = `https://spottifakeapi.tk/index.php/playlists/getPlaylistsUser/${this.userActual.id_usuario}`;
-      axios.get(urlProd).then((result) => {
-        this.playlists = result.data;
-      });
-    },
-  },
-  mounted() {
+  methods: {},
+  async mounted() {
     if (localStorage.getItem("dataUser")) {
       this.userActual = JSON.parse(localStorage.getItem("dataUser"));
+      this.playlists = await getPlaylists(this.userActual.id_usuario);
     } else {
       this.$router.push("/login");
     }
     // localStorage.removeItem("dataUser")
-    this.getPlaylists();
-    let recaptchaScript = document.createElement("script");
-    recaptchaScript.setAttribute(
-      "src",
-      "https://kit.fontawesome.com/5b23b3e9e6.js"
-    );
-    document.head.appendChild(recaptchaScript);
   },
 };
 </script>
